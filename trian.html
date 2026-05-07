@@ -346,10 +346,12 @@ body{display:flex;flex-direction:column;height:100vh}
         </div>
 
         <div class="res-btns" id="resBtns">
-          <button class="rbtn rbtn-a" id="btnA" onclick="goTo('btnA')">🏆 انتقل إلى بيئة التعلم<span class="rbtn-tag">أسلوب التعلم معتمد — نمط الدعم الثابت</span></button>
-          <button class="rbtn rbtn-b" id="btnB" onclick="goTo('btnB')">🎯 انتقل إلى بيئة التعلم<span class="rbtn-tag">أسلوب التعلم المستقل — نمط الدعم الثابت</span></button>
-          <button class="rbtn rbtn-c" id="btnC" onclick="goTo('btnC')">📚 بيئة التعلم<span class="rbtn-tag">أسلوب التعلم معتمد — نمط الدعم المرن</span></button>
-          <button class="rbtn rbtn-d" id="btnD" onclick="goTo('btnD')">🌱 بيئة التعلم<span class="rbtn-tag">أسلوب التعلم مستقل — نمط الدعم المرن</span></button>
+          <!-- معتمد: btnA (ثابت) + btnC (مرن) -->
+          <button class="rbtn rbtn-a" id="btnA" onclick="goTo('btnA')" style="display:none">🏆 انتقل إلى بيئة التعلم<span class="rbtn-tag">نمط الدعم الثابت — معتمد</span></button>
+          <button class="rbtn rbtn-c" id="btnC" onclick="goTo('btnC')" style="display:none">📚 انتقل إلى بيئة التعلم<span class="rbtn-tag">نمط الدعم المرن — معتمد</span></button>
+          <!-- مستقل: btnB (ثابت) + btnD (مرن) -->
+          <button class="rbtn rbtn-b" id="btnB" onclick="goTo('btnB')" style="display:none">🎯 انتقل إلى بيئة التعلم<span class="rbtn-tag">نمط الدعم الثابت — مستقل</span></button>
+          <button class="rbtn rbtn-d" id="btnD" onclick="goTo('btnD')" style="display:none">🌱 انتقل إلى بيئة التعلم<span class="rbtn-tag">نمط الدعم المرن — مستقل</span></button>
         </div>
         <div id="adminLinks" style="display:none">
           <span id="urlA">https://worledtecnology-spec.github.io/Fixed-Support--g1/</span>
@@ -1241,29 +1243,37 @@ function showResults(){
   si.textContent  = scoreMsg;
   si.className    = 'score-info' + (scoreInfoCls ? ' '+scoreInfoCls : '');
 
-  /* ── إظهار/إخفاء زر الإعادة ── */
+  /* ── إظهار/إخفاء زر الإعادة والأزرار ── */
   const retryBox = document.getElementById('retryBox');
   const resBtns  = document.getElementById('resBtns');
+
+  // إخفاء كل الأزرار أولاً
+  ['btnA','btnB','btnC','btnD'].forEach(id=>{
+    document.getElementById(id).style.display='none';
+  });
+
   if (correct === 0) {
     retryBox.style.display = 'block';
     resBtns.style.display  = 'none';
   } else {
     retryBox.style.display = 'none';
     resBtns.style.display  = 'grid';
-  }
 
-  /* ── تفعيل/تعطيل الأزرار ── */
-  ['btnA','btnB','btnC','btnD'].forEach(id=>{
-    const el = document.getElementById(id);
-    el.disabled = disableBtn.includes(id);
-    if(disableBtn.includes(id)){
-      el.style.opacity='0.35';
-      el.title='هذه البيئة لا تتناسب مع نتيجتك';
+    if (bcls === 'dep') {
+      // معتمد → ثابت-معتمد (btnA) + مرن-معتمد (btnC)
+      document.getElementById('btnA').style.display = 'flex';
+      document.getElementById('btnC').style.display = 'flex';
+    } else if (bcls === 'ind') {
+      // مستقل → ثابت-مستقل (btnB) + مرن-مستقل (btnD)
+      document.getElementById('btnB').style.display = 'flex';
+      document.getElementById('btnD').style.display = 'flex';
     } else {
-      el.style.opacity='1';
-      el.title='';
+      // حالة حافة: أظهر الكل
+      ['btnA','btnB','btnC','btnD'].forEach(id=>{
+        document.getElementById(id).style.display='flex';
+      });
     }
-  });
+  }
 }
 
 /* ================================================================
