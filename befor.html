@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاختبار التحصيلي القبلي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-main: #f0f4f4;
+    --bg-secondary: #1b4a4a;
+    --card-bg: #ffffff;
+    --primary: #1b6b5a;
+    --primary-light: #2dd4bf;
+    --accent: #0a8545;
+    --accent-soft: #0b703d;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border: #d1fae5;
+    --nav-bg: #1b5e5e;
+}
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+}
+body { display: flex; flex-direction: column; height: 100vh; }
+
+/* ========== الهيدر ========== */
+.header {
+    background: var(--bg-secondary);
+    padding: 7px 20px;
+    text-align: center;
+    position: relative;
+    border-bottom: 2px solid #14b8a6;
+    flex-shrink: 0;
+}
+.header-title {
+    font-size: 18px; font-weight: 700; color: #fff;
+    max-width: 70%; margin: 0 auto; line-height: 1.5;
+}
+.support-badge {
+    position: absolute; top: 50%; left: 20px; transform: translateY(-50%);
+    background: var(--accent); color: #fff; padding: 1px 16px;
+    border-radius: 25px; font-size: 14px; font-weight: 700;
+    box-shadow: 0 4px 12px rgba(10,133,69,0.35);
+}
+
+/* ========== ناف بار ========== */
+.nav {
+    display: flex; justify-content: center; gap: 10px;
+    background: var(--nav-bg); padding: 8px 16px; flex-wrap: wrap;
+    border-bottom: 2px solid #0f766e; flex-shrink: 0;
+}
+.nav a {
+    color: #e0f2f1; text-decoration: none; font-size: 14px; font-weight: 700;
+    padding: 6px 14px; border-radius: 50px; border: 2px solid rgba(167,243,208,0.5);
+    transition: all 0.3s ease; background: transparent;
+}
+.nav a:hover, .nav a.active {
+    background: #fff; color: #1b5e5e; border-color: #fff;
+    transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
+
+/* ========== محتوى الصفحة ========== */
+.page-content {
+    flex: 1; display: flex; overflow: hidden; gap: 0;
+}
+
+/* ========== لوحة التعليمات ========== */
+.instructions-panel {
+    width: 28%; background: var(--bg-secondary); color: #e0f2f1;
+    padding: 14px 16px; overflow: hidden; border-left: 2px solid #0f766e;
+    display: flex; flex-direction: column; gap: 10px;
+}
+.instructions-panel h2 {
+    color: #2dd4bf; font-size: 15px; margin: 0 0 2px 0;
+    border-bottom: 1px solid rgba(45,212,191,0.3); padding-bottom: 6px;
+    flex-shrink: 0;
+}
+.inst-box {
+    background: rgba(255,255,255,0.07); border-radius: 10px;
+    padding: 9px 12px; font-size: 12px; line-height: 1.7; flex-shrink: 0;
+}
+.inst-box strong { color: #2dd4bf; }
+.inst-item {
+    display: flex; align-items: flex-start; gap: 7px; margin-bottom: 4px; font-size: 12px;
+}
+.inst-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.progress-wrap { flex-shrink: 0; }
+.progress-label { font-size: 11px; color: #94a3b8; margin-bottom: 4px; display: flex; justify-content: space-between; }
+.progress-bar-outer { background: rgba(255,255,255,0.1); border-radius: 20px; height: 7px; overflow: hidden; }
+.progress-bar-inner { height: 100%; border-radius: 20px; background: linear-gradient(90deg,#0a8545,#2dd4bf); transition: width 0.4s ease; }
+.section-badges { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+.badge {
+    padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+}
+.badge.mcq { background: rgba(45,212,191,0.2); color: #2dd4bf; border: 1px solid #2dd4bf; }
+.badge.tf { background: rgba(10,133,69,0.25); color: #6ee7b7; border: 1px solid #6ee7b7; }
+.timer-display {
+    background: rgba(255,255,255,0.08); border-radius: 10px; padding: 8px 12px;
+    text-align: center; font-size: 26px; font-weight: 700; color: #2dd4bf; letter-spacing: 3px;
+    flex-shrink: 0;
+}
+.timer-label { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 2px; flex-shrink: 0; }
+
+/* ========== منطقة الاختبار ========== */
+.quiz-panel {
+    flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 16px;
+    gap: 12px;
+}
+
+/* ========== شريط العنوان ========== */
+.quiz-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fff; border-radius: 12px; padding: 10px 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07); flex-shrink: 0;
+}
+.quiz-section-label {
+    font-size: 13px; font-weight: 700; color: var(--primary);
+    background: var(--border); padding: 4px 14px; border-radius: 20px;
+}
+.quiz-counter { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+.quiz-counter span { color: var(--primary); font-weight: 700; }
+
+/* ========== كارت السؤال ========== */
+.question-card {
+    flex: 1; background: #fff; border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 24px 28px;
+    display: flex; flex-direction: column; gap: 16px; overflow: hidden;
+}
+.question-num {
+    font-size: 12px; color: var(--text-muted); font-weight: 600;
+    background: #f0fdf4; display: inline-block; padding: 3px 12px;
+    border-radius: 20px; margin-bottom: 2px; border: 1px solid var(--border);
+}
+.question-text {
+    font-size: 16px; font-weight: 700; color: var(--text-main);
+    line-height: 1.7; flex-shrink: 0;
+}
+.options-container {
+    display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1;
+}
+.option-btn {
+    display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px;
+    border: 2px solid #e5e7eb; border-radius: 12px; cursor: pointer;
+    transition: all 0.2s ease; background: #fafafa; text-align: right;
+    font-family: 'Cairo', sans-serif; font-size: 14px; color: var(--text-main);
+    font-weight: 600; line-height: 1.5; width: 100%; box-sizing: border-box;
+}
+.option-btn:hover { border-color: var(--primary-light); background: #f0fdf4; transform: translateX(-2px); }
+.option-btn.selected { border-color: var(--primary); background: #ecfdf5; color: var(--primary); }
+.option-letter {
+    width: 28px; height: 28px; border-radius: 50%; background: #e5e7eb;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0; transition: all 0.2s;
+}
+.option-btn.selected .option-letter { background: var(--primary); color: #fff; }
+
+/* TF خاص */
+.tf-container { display: flex; gap: 14px; }
+.tf-btn {
+    flex: 1; padding: 16px; border: 2px solid #e5e7eb; border-radius: 14px;
+    cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 16px;
+    font-weight: 700; text-align: center; transition: all 0.25s; background: #fafafa;
+}
+.tf-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.tf-btn.true-btn { color: #059669; border-color: #6ee7b7; }
+.tf-btn.true-btn:hover, .tf-btn.true-btn.selected { background: #d1fae5; border-color: #059669; }
+.tf-btn.false-btn { color: #dc2626; border-color: #fca5a5; }
+.tf-btn.false-btn:hover, .tf-btn.false-btn.selected { background: #fee2e2; border-color: #dc2626; }
+
+/* ========== أزرار التنقل ========== */
+.nav-buttons {
+    display: flex; gap: 12px; justify-content: space-between; align-items: center; flex-shrink: 0;
+}
+.nav-btn {
+    padding: 10px 24px; border-radius: 50px; border: none; cursor: pointer;
+    font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 700;
+    transition: all 0.25s; display: flex; align-items: center; gap: 8px;
+}
+.btn-prev { background: #e5e7eb; color: #374151; }
+.btn-prev:hover { background: #d1d5db; }
+.btn-next { background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(27,107,90,0.35); }
+.btn-next:hover { background: var(--accent); transform: translateX(-3px); }
+.btn-submit { background: linear-gradient(135deg,#059669,#0a8545); color: #fff; box-shadow: 0 4px 14px rgba(10,133,69,0.4); }
+.btn-submit:hover { filter: brightness(1.1); }
+.answered-indicator {
+    font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;
+}
+.answered-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
+
+/* ========== لوحة النتيجة الداخلية ========== */
+.result-panel {
+    display: none; flex-direction: column; gap: 14px;
+    background: #fff; border-radius: 16px; padding: 28px 32px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); flex: 1;
+    justify-content: center; align-items: center; text-align: center;
+    animation: popIn 0.4s ease;
+}
+.result-panel.show { display: flex; }
+@keyframes popIn { from{transform:scale(0.95);opacity:0} to{transform:scale(1);opacity:1} }
+.result-icon { font-size: 52px; }
+.result-title { font-size: 20px; font-weight: 700; color: var(--primary); }
+.result-score {
+    font-size: 56px; font-weight: 700;
+    background: linear-gradient(135deg,#059669,#0a8545);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+.result-detail { font-size: 13px; color: var(--text-muted); line-height: 1.9; }
+.result-breakdown {
+    display: flex; gap: 12px; justify-content: center; width: 100%;
+}
+.breakdown-item {
+    background: #f0fdf4; border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px 16px; flex: 1;
+}
+.breakdown-label { font-size: 11px; color: var(--text-muted); }
+.breakdown-val { font-size: 22px; font-weight: 700; color: var(--primary); }
+.result-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.wa-btn {
+    background: #25d366; color: #fff; border: none; border-radius: 50px;
+    padding: 13px 24px; font-family: 'Cairo',sans-serif; font-size: 14px;
+    font-weight: 700; cursor: pointer; width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: all 0.25s; box-shadow: 0 4px 14px rgba(37,211,102,0.4);
+}
+.wa-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+.wa-btn svg { width: 20px; height: 20px; fill: #fff; }
+.home-btn {
+    background: var(--primary); color: #fff; border: none; border-radius: 50px;
+    padding: 11px 24px; font-family: 'Cairo',sans-serif; font-size: 14px;
+    font-weight: 700; cursor: pointer; width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.25s; box-shadow: 0 4px 14px rgba(27,107,90,0.3);
+    text-decoration: none;
+}
+.home-btn:hover { filter: brightness(1.1); }
+
+/* بطاقة اسم الطالب في اللوحة الجانبية */
+.student-card {
+    background: linear-gradient(135deg, rgba(45,212,191,.18), rgba(10,133,69,.15));
+    border: 1.5px solid rgba(45,212,191,.4);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+.student-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1b6b5a, #2dd4bf);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+}
+.student-card-info { flex: 1; min-width: 0; }
+.student-card-label { font-size: 10px; color: #94a3b8; margin-bottom: 2px; }
+.student-card-name {
+    font-size: 13px; font-weight: 700; color: #e0f2f1;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* اسم الطالب في شريط الاختبار العلوي */
+.quiz-student-tag {
+    font-size: 12px; font-weight: 700;
+    color: var(--primary);
+    background: #ecfdf5;
+    border: 1.5px solid #6ee7b7;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: flex; align-items: center; gap: 5px;
+    max-width: 160px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+
+.welcome-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(27,74,74,0.7);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.welcome-box {
+    background: #fff;
+    border-radius: 28px;
+    padding: 44px 40px 38px;
+    width: 90%;
+    max-width: 440px;
+    box-shadow: 0 28px 70px rgba(27,74,74,.32);
+    text-align: center;
+    border-top: 6px solid var(--primary);
+    animation: wbPop .4s cubic-bezier(.34,1.4,.64,1) both;
+}
+@keyframes wbPop {
+    from { transform: translateY(30px) scale(.95); opacity: 0; }
+    to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+.welcome-icon { font-size: 56px; margin-bottom: 10px; }
+.welcome-title {
+    font-size: 20px; font-weight: 900;
+    color: var(--bg-secondary); margin-bottom: 6px;
+}
+.welcome-sub {
+    font-size: 13px; color: var(--text-muted);
+    line-height: 1.7; margin-bottom: 26px;
+}
+.welcome-info-row {
+    display: flex; gap: 10px; justify-content: center;
+    margin-bottom: 24px; flex-wrap: wrap;
+}
+.welcome-chip {
+    background: #ecfdf5; border: 1.5px solid #6ee7b7;
+    color: #065f46; font-size: 12px; font-weight: 700;
+    padding: 5px 14px; border-radius: 20px;
+}
+.name-group { margin-bottom: 20px; text-align: right; }
+.name-group label {
+    display: block; font-size: 13.5px; font-weight: 700;
+    color: var(--text-main); margin-bottom: 8px;
+}
+.name-input {
+    width: 100%; padding: 13px 16px;
+    border: 2px solid #d1fae5; border-radius: 14px;
+    font-family: 'Cairo', sans-serif; font-size: 15px;
+    color: var(--text-main); background: #f9fffe;
+    outline: none; text-align: right;
+    transition: border-color .2s, box-shadow .2s;
+    box-sizing: border-box;
+}
+.name-input:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(45,212,191,.15);
+}
+.name-input::placeholder { color: #b0b8c1; }
+.name-error {
+    background: #fef2f2; border: 1.5px solid #fca5a5;
+    color: #b91c1c; border-radius: 10px;
+    padding: 8px 14px; font-size: 12.5px; font-weight: 600;
+    text-align: center; margin-bottom: 14px; display: none;
+}
+.name-error.show { display: block; }
+.start-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff; font-family: 'Cairo', sans-serif;
+    font-size: 15px; font-weight: 700;
+    border: none; border-radius: 16px; cursor: pointer;
+    transition: opacity .2s, transform .15s;
+    box-shadow: 0 6px 20px rgba(27,107,90,.3);
+}
+.start-btn:hover { opacity: .9; transform: translateY(-2px); }
+
+/* اسم الطالب في لوحة النتيجة */
+.student-name-display {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 2px solid #6ee7b7;
+    border-radius: 14px;
+    padding: 10px 18px;
+    font-size: 14px; font-weight: 700;
+    color: #065f46;
+    margin-bottom: 4px;
+}
+
+/* ========== موبايل ========== */
+@media (max-width: 768px) {
+    .support-badge { position: static; transform: none; display: inline-block; margin-bottom: 10px; }
+    .header { padding-top: 10px; }
+    .header-title { max-width: 100%; font-size: 15px; }
+    .nav a { font-size: 12px; padding: 5px 10px; }
+    .instructions-panel { display: none; }
+    .quiz-panel { padding: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ======== شاشة إدخال اسم الطالب ======== -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-box">
+    <div class="welcome-icon">📋</div>
+    <div class="welcome-title">الاختبار التحصيلي القبلي</div>
+    <div class="welcome-sub">
+      بيئة التعلم المدمج لتنمية مهارات إنتاج الدروس التفاعلية<br>
+      يرجى إدخال اسمك قبل البدء في الاختبار
+    </div>
+    <div class="welcome-info-row">
+      <span class="welcome-chip">⏱️ 90 دقيقة</span>
+      <span class="welcome-chip">📝 160 سؤال</span>
+      <span class="welcome-chip">💯 160 درجة</span>
+    </div>
+    <div class="name-group">
+      <label for="studentNameInput">👤 اسم الطالب / الطالبة</label>
+      <input type="text" id="studentNameInput" class="name-input"
+             placeholder="اكتب اسمك الكامل هنا..."
+             onkeydown="if(event.key==='Enter') startExam()">
+    </div>
+    <div class="name-error" id="nameError">⚠️ يرجى كتابة اسمك أولاً قبل البدء</div>
+    <button class="start-btn" onclick="startExam()">🚀 ابدأ الاختبار الآن</button>
+  </div>
+</div>
+
+<div class="header">
+    <div class="header-title">بيئة التعلم المدمج لتنمية مهارات إنتاج الدروس التفاعلية لدى طلاب كلية التربية النوعية</div>
+</div>
+
+<div class="nav">
+  <a href="index.html">🏠 الرئيسية</a>
+  <a href="aims.html">🎯 أهداف البيئة</a>
+  <a href="pretest.html">  التقويم</a>
+  <a href="trian.html">  📖 اختبار اساليب التعلم </a>
+</div>
+
+<div class="page-content">
+
+    <!-- لوحة التعليمات -->
+    <div class="instructions-panel">
+        <h2>📋 تعليمات الاختبار</h2>
+
+        <!-- بطاقة اسم الطالب -->
+        <div class="student-card">
+            <div class="student-avatar">👤</div>
+            <div class="student-card-info">
+                <div class="student-card-label">الطالب / الطالبة</div>
+                <div class="student-card-name" id="sidebarStudentName">—</div>
+            </div>
+        </div>
+
+        <div class="inst-box">
+            <div class="inst-item"><span class="inst-icon">📌</span><span>اقرأ كل سؤال بعناية قبل الإجابة</span></div>
+            <div class="inst-item"><span class="inst-icon">✅</span><span>أجب عن جميع الأسئلة قبل التسليم</span></div>
+            <div class="inst-item"><span class="inst-icon">⏱️</span><span>راقب الوقت المتبقي باستمرار</span></div>
+            <div class="inst-item"><span class="inst-icon">📲</span><span>ستُرسل النتيجة للباحثة عبر واتساب</span></div>
+            <div class="inst-item"><span class="inst-icon">🔒</span><span>لا تُعرض الإجابة الصحيحة أثناء الاختبار</span></div>
+        </div>
+
+        <div>
+            <div class="timer-display" id="timerDisplay">90:00</div>
+            <div class="timer-label">⏳ الوقت المتبقي</div>
+        </div>
+
+        <div class="section-badges">
+            <div class="badge mcq">💡 اختيار من متعدد: 80</div>
+            <div class="badge tf">✔️ صواب وخطأ: 80</div>
+        </div>
+
+        <div class="progress-wrap">
+            <div class="progress-label">
+                <span>التقدم</span>
+                <span id="progressText">0 / 160</span>
+            </div>
+            <div class="progress-bar-outer">
+                <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+            </div>
+        </div>
+
+        <div class="inst-box" style="font-size:11px; color:#94a3b8; line-height:1.8;">
+            <strong style="color:#2dd4bf">📊 تفاصيل الاختبار:</strong><br>
+            • المجموعة الأولى: اختيار من متعدد (80 س)<br>
+            • المجموعة الثانية: صواب أو خطأ (80 س)<br>
+            • الدرجة الكلية: <strong style="color:#2dd4bf">160 درجة</strong>
+        </div>
+    </div>
+
+    <!-- منطقة الاختبار -->
+    <div class="quiz-panel">
+        <div class="quiz-header">
+            <div class="quiz-section-label" id="sectionLabel">المجموعة الأولى: اختيار من متعدد</div>
+            <div class="quiz-student-tag" id="headerStudentName">👤 —</div>
+            <div class="quiz-counter">السؤال <span id="currentNum">1</span> من <span id="totalNum">160</span></div>
+        </div>
+
+        <!-- كارت السؤال -->
+        <div id="quizArea" style="display:flex; flex-direction:column; gap:12px; flex:1; overflow:hidden;">
+            <div class="question-card">
+                <div class="question-num" id="qNum">سؤال 1</div>
+                <div class="question-text" id="qText"></div>
+                <div class="options-container" id="optionsContainer"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn btn-prev" onclick="prevQ()">➡ السابق</button>
+                <div class="answered-indicator">
+                    <div class="answered-dot"></div>
+                    <span id="answeredCount">0</span> إجابة مسجلة
+                </div>
+                <button class="nav-btn btn-next" id="nextBtn" onclick="nextQ()">التالي ➡</button>
+            </div>
+        </div>
+
+        <!-- لوحة النتيجة (تظهر بدل الاختبار) -->
+        <div class="result-panel" id="resultPanel">
+            <div class="result-icon" id="resultIcon">🎓</div>
+            <div class="result-title">نتيجة الاختبار التحصيلي</div>
+            <div class="student-name-display" id="resultStudentName">👤 </div>
+            <div class="result-score" id="resultScore">0%</div>
+            <div class="result-breakdown">
+                <div class="breakdown-item">
+                    <div class="breakdown-label">✅ الصحيحة</div>
+                    <div class="breakdown-val" id="correctCount">0</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">❌ الخاطئة</div>
+                    <div class="breakdown-val" id="wrongCount" style="color:#dc2626">0</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">⬜ بدون إجابة</div>
+                    <div class="breakdown-val" id="unansweredCount" style="color:#f59e0b">0</div>
+                </div>
+            </div>
+            <div class="result-detail" id="resultDetail"></div>
+            <div class="result-actions">
+                <button class="wa-btn" onclick="sendWhatsApp()">
+                    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    إرسال النتيجة للباحثة عبر واتساب
+                </button>
+                <a href="index.html" class="home-btn">🏠 العودة للصفحة الرئيسية</a>
+                <a href="pretest.html" class="home-btn" style="background:linear-gradient(135deg,#1b6b5a,#2dd4bf);color:#fff;margin-top:8px;">📝 العودة لصفحة التقويم</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== بيانات الأسئلة =====
+// ===== بيانات الأسئلة =====
+const questions = [
+// === المجموعة الأولى: اختيار من متعدد ===
+{type:'mcq',text:'من عناصر المحتوى التعليمي للدروس التفاعلية ما يلي:',options:['الروابط والوصلات','مقاطع الفيديو','الصور الثابتة','جميع ما سبق'],correct:3},
+{type:'mcq',text:'يمكن نشر الدرس التفاعلي من خلال أمر:',options:['New','Open','Course Runtime','Publish course'],correct:3},
+{type:'mcq',text:'يكون التصميم التعليمي حلاً مناسباً إذا كانت المشكلة تتعلق بالحاجة إلى:',options:['تغيير المعارف','تغيير المهارات','تغيير الاتجاهات','جميع ما سبق'],correct:3},
+{type:'mcq',text:'الموضوع الرئيسي الذي يتكون من وحدة واحدة أو مجموعة وحدات في برنامج الكورس لاب يسمى:',options:['المقرر','الفصل','الوحدة','الشريحة'],correct:0},
+{type:'mcq',text:'تستخدم لقياس الجانب المعرفي:',options:['الاختبارات','بطاقة الملاحظة','الاستبانة','بطاقة تقييم المنتج'],correct:0},
+{type:'mcq',text:'توفر خصائص الدروس التفاعلية للمتعلم:',options:['بيئة تفاعلية نشطة مليئة بالمثيرات','تحقيق إيجابية ونشاط المتعلم','زيادة معارف المتعلم ومهاراته التكنولوجية','جميع ما سبق'],correct:3},
+{type:'mcq',text:'الكائنات الأكثر استخداماً في Course Lab:',options:['الكائنات الخارجية','الكائنات الداخلية','الكائنات المركبة','جميع ما سبق'],correct:1},
+{type:'mcq',text:'لكي يكون النشاط التعليمي مصمماً بشكل جيد لابد من:',options:['التحضير','المتابعة المستمرة','التأكيد على عامل الكفاءة','استثمار الموارد'],correct:1},
+{type:'mcq',text:'يمكن تحديد المعرف الذي يتم استخدامه كمرجع في نظام إدارة التعلم من خلال نافذة:',options:['General','Rules','Checks','Runtime'],correct:0},
+{type:'mcq',text:'من أمثلة الأهداف العامة:',options:['أن يتقن المتعلم استخدام الشرائح ببرنامج Course Lab','التعامل مع الشرائح ببرنامج course Lab','أن يتعرف المتعلم على الشرائح ببرنامج course Lab','جميع ما سبق'],correct:1},
+{type:'mcq',text:'من أنواع الأسئلة التي يمكن إدراجها ببرنامج كورس لاب:',options:['الصواب والخطأ','اختيار من متعدد','الترتيب','جميع ما سبق'],correct:3},
+{type:'mcq',text:'تمتلك الدروس التفاعلية العديد من الخصائص منها:',options:['دراسة المحتوى المقدم لمرة واحدة','زيادة التكلفة','مراعاة الفروق الفردية بين المتعلمين','تقوم على مبدأ الوسيط الواحد'],correct:2},
+{type:'mcq',text:'يتيح برنامج كورس لاب التحكم في وقت تشغيل الدرس التفاعلي من خلال:',options:['إظهار شريط القوائم','تحميل الصور مسبقاً','العرض المتوازي','إظهار شريط الأدوات'],correct:1},
+{type:'mcq',text:'أولى مراحل النموذج العام للتصميم التعليمي هي:',options:['تحديد المشكلة','التحليل','فرض الفروض','تحديد الأولويات'],correct:1},
+{type:'mcq',text:'عندما تحتاج لتنفيذ الأحداث على الكائنات وقد تستخدم للانتقال بين الشرائح، قم بإدراج كائن من النوع:',options:['النوافذ المنبثقة Popup windows','البالونات Balloons','الأزرار Buttons','القوائم Lists'],correct:2},
+{type:'mcq',text:'من مكونات النشاط التعليمي:',options:['الأهداف','التغذية الراجعة','التعزيز','لا شيء مما سبق'],correct:0},
+{type:'mcq',text:'يطلق على المرحلة الثانية من مراحل نموذج ADDIE مرحلة:',options:['التصميم','التطوير','التنفيذ','التقويم'],correct:0},
+{type:'mcq',text:'من مميزات التغذية الراجعة بعد مرحلة التنفيذ:',options:['التحقق من إمكانية الوصول','توصيل الدرس للطلاب','التجريب على عينة من المتعلمين','وضع جدول زمني'],correct:0},
+{type:'mcq',text:'يتكون النموذج العام لتصميم التعليم من خمس خطوات رئيسة هي بالترتيب:',options:['تحليل تطوير إنتاج تركيب تقويم','تحليل تصميم تطوير تنفيذ تقويم','تحليل تطوير تصميم تقويم تنفيذ','تصميم تحليل تطوير تنفيذ تقويم'],correct:1},
+{type:'mcq',text:'يمكن تحديد المهام الفرعية لكل مهمة رئيسية من خلال:',options:['تحديد التسلسل الأفضل للتعليم','مراجعة الموضوعات','تقارير الخبراء','تصميم السيناريو'],correct:0},
+{type:'mcq',text:'يطلق على عملية إضافة عناصر جديدة إلى المحتوى التعليمي:',options:['حذف المحتوى','استبدال المحتوى','تحديث المحتوى','تنظيم الشريحة'],correct:2},
+{type:'mcq',text:'ينبغي تصميم السيناريو في شكل:',options:['شكل','فيديو','جدول','صورة'],correct:2},
+{type:'mcq',text:'من مميزات الدروس التفاعلية:',options:['تقديم فرص للإثراء والمراجعة','إمكانية التحديث والتعديل','سهولة تصحيح الواجبات والاختبار','جميع ما سبق'],correct:3},
+{type:'mcq',text:'تستخدم لقياس مدى جودة الدرس التفاعلي:',options:['الاختبارات','بطاقة الملاحظة','الاستبانة','بطاقة تقييم المنتج'],correct:3},
+{type:'mcq',text:'توجد على يسار شاشة البرنامج وتضم بيانات الفصل والوحدة:',options:['Course Pane','Opened Module','Task Pane window','Slide'],correct:0},
+{type:'mcq',text:'المرحلة النهائية من مراحل نموذج ADDIE هي مرحلة:',options:['التصميم','التطوير','التنفيذ','التقويم'],correct:3},
+{type:'mcq',text:'تشمل أدوات الاتصال المستخدمة في التفاعل مع الدروس التفاعلية كلاً من:',options:['البريد الإلكتروني','المناقشة','الدردشة','جميع ما سبق'],correct:3},
+{type:'mcq',text:'تتيح نوافذ برنامج كورس لاب تعديل:',options:['النصوص','الصور','الأشكال','جميع ما سبق'],correct:3},
+{type:'mcq',text:'يطلق على الأسس والمبادئ اللازمة لتنظيم المحتوى وعرضه داخل الدرس التفاعلي معايير:',options:['فنية','تربوية','تعليمية','تكنولوجية'],correct:1},
+{type:'mcq',text:'يمكن التحكم في زمن تشغيل المقرر الإلكتروني من خلال نافذة:',options:['General','Rules','Checks','Course properties'],correct:3},
+{type:'mcq',text:'تبدأ مرحلة التحليل بـ:',options:['تحليل المتعلم','تصميم البيئة','التقويم الختامي','تصميم السيناريو'],correct:0},
+{type:'mcq',text:'جميع ما يلي من مميزات الدروس التفاعلية ما عدا:',options:['تفريد التعليم','اختفاء العناصر الإيجابية من نفوس المتعلمين','الوسائط المتعددة','سهولة الوصول إليها في أي وقت وأي مكان'],correct:1},
+{type:'mcq',text:'عندما تحتاج لكتابة تعليمات أو إرشادات على الشرائح تظهر عند تمرير الماوس وتختفي عندما يتم إبعاد الماوس، قم بإدراج كائن من النوع:',options:['النوافذ المنبثقة Popup windows','البالونات Balloons','الأزرار Buttons','القوائم Lists'],correct:1},
+{type:'mcq',text:'كل ما تحتويه شاشة الدرس التفاعلي من بيانات مكتوبة تعرض على المتعلم أثناء تفاعله مع شريحة الدرس يطلق عليه مصطلح:',options:['الصور الثابتة','الرسوم المتحركة','النصوص التعليمية','مقاطع الفيديو'],correct:2},
+{type:'mcq',text:'لتحديد المستوى الفعلي للأداء الحالي لابد من:',options:['تحديد الأداء المثالي','ترتيب الأهداف','تحديد الأداء الواقعي','تحديد الفجوة'],correct:2},
+{type:'mcq',text:'يمكن نشر دروس كورس لاب على هيئة:',options:['CD','LMS 1.2','LMS 2004','جميع ما سبق'],correct:3},
+{type:'mcq',text:'أولى خطوات تحليل الحاجات التعليمية:',options:['تحديد الأداء المثالي','ترتيب الأهداف','تحديد الأداء الواقعي','تحديد الفجوة'],correct:0},
+{type:'mcq',text:'يتم التفاعل في الدروس التفاعلية من خلال أدوات الاتصال:',options:['التزامنية','غير التزامنية','التزامنية وغير التزامنية','لا شيء مما سبق'],correct:2},
+{type:'mcq',text:'منطقة في وسط الشاشة الرئيسية لبرنامج الكورس لاب وتحتوي على قسمين: الشرائح ومنطقة العمل هي:',options:["Course Pane","Opened Module's window","Task Pane","Slide"],correct:1},
+{type:'mcq',text:'يقصد بالملاحظة كأداة لجمع المعلومات بمرحلة التحليل:',options:['ملاحظة أداء الإدارة','ملاحظة أداء العمال','ملاحظة أداء الطالب','جميع ما سبق'],correct:2},
+{type:'mcq',text:'يمكن التحكم في خصائص الشخصية المساعدة، من ذلك:',options:['مظهر الشخصية','الطول','الوزن','الكثافة'],correct:0},
+{type:'mcq',text:'يؤدي تقسيم شرائح الدرس التفاعلي بنظام موحد إلى:',options:['التوافق مع حركة العين','سهولة الشرح','تقليل الوقت','تقليل الجهد'],correct:0},
+{type:'mcq',text:'مصادر جمع المعلومات:',options:['الخبرة الشخصية','أولياء الأمور','المدراء','جميع ما سبق'],correct:3},
+{type:'mcq',text:'يحتوي كل مقرر يتم إنتاجه على:',options:['وحدة افتراضية','شريحة افتراضية','قوائم افتراضية','تطبيقات افتراضية'],correct:0},
+{type:'mcq',text:'يتم التفاعل في الدروس التفاعلية بين:',options:['المعلم والمتعلم','المتعلم وزميله','المتعلم والمحتوى','جميع ما سبق'],correct:3},
+{type:'mcq',text:'يتضمن برنامج كورس لاب قوائم من النوع:',options:['البسيط','المعقد','الموجز','المفصل'],correct:0},
+{type:'mcq',text:'يتم تصحيح النشاط التعليمي في ضوء:',options:['الأهداف','التغذية الراجعة','التعزيز','معايير التقييم'],correct:3},
+{type:'mcq',text:'لإضافة التعليقات في الشريحة؛ اضغط بالزر الأيمن على الشريحة المطلوبة واختر:',options:['Comments','Handouts','Normal','Slide'],correct:0},
+{type:'mcq',text:'تتضمن مصادر اشتقاق خصائص المتعلمين:',options:['السجلات الوظيفية للمتعلمين','الدافع الأكاديمي','الخصائص الفيزيولوجية','الخصائص العقلية'],correct:0},
+{type:'mcq',text:'تساعد النصوص في الدروس التفاعلية على:',options:['توضيح الأفكار','عرض إرشادات وتوجيهات المتعلم','شرح الصور والرسومات','جميع ما سبق'],correct:3},
+{type:'mcq',text:'تنقسم معايير تصميم الدروس التفاعلية إلى معايير:',options:['فنية وتربوية','فنية وغير فنية','تربوية وغير تربوية','تربوية وتعليمية'],correct:0},
+{type:'mcq',text:'تحتوي لوحة الوحدات على:',options:['اسم البرنامج','مسار البرنامج','أسماء الفصول','عناوين الروابط'],correct:2},
+{type:'mcq',text:'من معايير تصميم شرائح الدروس التفاعلية:',options:['مراعاة اتجاه النص','تنوع الخطوط','دقة الصوت','دقة الفيديو'],correct:0},
+{type:'mcq',text:'يدعم كورس لاب التعامل مع الصور ذات الامتداد:',options:['MP4','MP3','WMA','PNG'],correct:3},
+{type:'mcq',text:'تخطيط ورقي مكتوب يشتمل على خطوات تنفيذية لإنتاج الدرس التفاعلي:',options:['السيناريو','دليل المتعلم','أهداف التعلم','المرشد التعليمي'],correct:0},
+{type:'mcq',text:'مرحلة يتم فيها وصف الأساليب والإجراءات والتي تتعلق بكيفية تنفيذ عمليتي التعليم والتعلم:',options:['التصميم','التحليل','التركيب','التقويم'],correct:0},
+{type:'mcq',text:'من معايير تصميم مقاطع الفيديو:',options:['إمكانية التوقف والإعادة','مساحة شاشة مناسبة','استبعاد اللقطات السريعة','جميع ما سبق'],correct:3},
+{type:'mcq',text:'من مصادر تجميع المحتوى:',options:['الكتب والمراجع','البحوث والمؤتمرات','الخبراء','جميع ما سبق'],correct:3},
+{type:'mcq',text:'يطلق على مراعاة المسافات بين الكلمات والحروف والسطور:',options:['التوافق مع حركة العين','تنظيم الشرائح','توظيف الفراغات','الكلمات المفتاحية'],correct:2},
+{type:'mcq',text:'يستخدم الصوت والمؤثرات الصوتية في الدروس التفاعلية في:',options:['عرض المحتوى','تدعيم المحتوى المعروض','عرض وتدعيم المحتوى','لا شيء مما سبق'],correct:2},
+{type:'mcq',text:'يمكن صياغة موضوع التعلم من خلال ما يلي:',options:['احتياجات المعلمين','احتياجات المدراء','الخطة الدراسية','جميع ما سبق'],correct:2},
+{type:'mcq',text:'عندما تحتاج لإدراج شخصية كرتونية لها مجموعة من الأفعال يمكن تشغيلها اعتماداً على الإجراءات التي ستطبق عليها، قم بإدراج كائن من النوع:',options:['Animated agent','Balloons','Buttons','Lists'],correct:0},
+{type:'mcq',text:'يطلق على المجال الذي يتناول الأهداف التي تتضمن المهارات العضلية:',options:['المجال العلمي','المجال المعرفي','المجال المهاري','المجال الوجداني'],correct:2},
+{type:'mcq',text:'يمكن التحكم في خصائص Balloons ومنها:',options:['اللون','النص','اتجاه السهم','جميع ما سبق'],correct:3},
+{type:'mcq',text:'تتم التغذية الراجعة لمرحلة التصميم لـ:',options:['معرفة فاعلية أنشطة التعلم','معرفة فاعلية أدوات التفاعل','معرفة فاعلية الشرائح','جميع ما سبق'],correct:3},
+{type:'mcq',text:'لتحرير شريحة العنوان اختر الأمر ...... من قائمة عرض View:',options:['Title','Master','Normal','Slide'],correct:0},
+{type:'mcq',text:'لتحرير الشريحة الرئيسية اختر الأمر ...... من قائمة عرض View:',options:['Title','Master','Normal','Slide'],correct:1},
+{type:'mcq',text:'يمكن إضافة قصاصة فنية إلى الشريحة من خلال قائمة إدراج ثم اختر صورة ثم اختر:',options:['Clip Art','From File','AutoShapes','Image'],correct:0},
+{type:'mcq',text:'لتحرير اسم الشريحة اختر الأمر ...... من قائمة عرض View:',options:['Title','Master','Normal','Slide'],correct:2},
+{type:'mcq',text:'لعمل اختبار متكامل به كافة أنواع الأسئلة انتقل إلى مكتبة الكائنات Object Library ثم اختر الكائن:',options:['Questions','Test','Quiz','Exam'],correct:0},
+{type:'mcq',text:'لاستعراض محتوى الوحدة الحالية اختر الوحدة التعليمية ثم اضغط على مفتاح:',options:['F5','F7','Enter','Shift+F5'],correct:0},
+{type:'mcq',text:'لإضافة شريحة جديدة اختر شريحة جديدة من قائمة:',options:['File','Edit','Insert','View'],correct:2},
+{type:'mcq',text:'يمكن التحكم في إعدادات الاختبار من خلال المربع الحواري:',options:['Questions','Test','Quiz','Exam'],correct:1},
+{type:'mcq',text:'يمكن إضافة صورة من ملف مخزن على جهازك من خلال قائمة إدراج ثم اختر صورة ثم اختر:',options:['Clip Art','From File','AutoShapes','Image'],correct:1},
+{type:'mcq',text:'يمكن إدراج الأشكال التلقائية إلى الشريحة من خلال قائمة إدراج ثم اختر صورة ثم اختر:',options:['Clip Art','From File','AutoShapes','Image'],correct:2},
+{type:'mcq',text:'يمكن إظهار الخط الزمني ببرنامج كورس لاب من خلال:',options:['View > Time line','File > Time line','Insert > Time line','Format > Time line'],correct:0},
+{type:'mcq',text:'يمكن التحكم في الطريقة عند إضافة حدث ما للشخصية الرسومية من خلال:',options:['General','Action','on success','Method'],correct:3},
+{type:'mcq',text:'يمكن إدراج نص في الشريحة من خلال قائمة:',options:['Format','Insert','File','View'],correct:1},
+{type:'mcq',text:'يمكن التحكم في طريقة عرض الزر من خلال نافذة:',options:['Display','Balloons','Buttons','Properties'],correct:0},
+{type:'mcq',text:'يمكن إضافة تأثير انتقالي على الكائن في برنامج Course lab من خلال تبويب:',options:['Display','Size','Position','Colors and Lines'],correct:0},
+
+// === المجموعة الثانية: صواب أو خطأ ===
+{type:'tf',text:'الوسائط المتعددة الرقمية بالدروس التفاعلية تتضمن النصوص والصوت والصور والرسوم الثابتة والمتحركة والفيديو.',correct:'true'},
+{type:'tf',text:'منطقة العمل هي المنطقة التي تسمح بوضع الكائنات على الشريحة التي تم تحديدها.',correct:'true'},
+{type:'tf',text:'تعد اختبارات الذكاء من مصادر اشتقاق خصائص المتعلمين.',correct:'true'},
+{type:'tf',text:'يمكن تحرير الشريحة الرئيسية ببرنامج كورس لاب.',correct:'true'},
+{type:'tf',text:'يمكن نشر الدروس التفاعلية دون السماح بضبط إعدادات زمن التشغيل.',correct:'false'},
+{type:'tf',text:'تنوع الوسائل وتعددها وتكاملها في الدروس التفاعلية يضمن مراعاة الفروق الفردية بين المتعلمين.',correct:'true'},
+{type:'tf',text:'يتضمن السيناريو جدول به كل عنصر ووصف لما يتضمنه.',correct:'true'},
+{type:'tf',text:'الدروس التفاعلية هي برامج تعليمية تفاعلية تشتمل على المحتوى التعليمي للدرس في شكل مطبوع.',correct:'false'},
+{type:'tf',text:'برنامج كورس لاب يوفر إمكانية نشر الدرس التفاعلي إلى LMS وفق معيار سكور 2004.',correct:'true'},
+{type:'tf',text:'تضمن قائمة المهام مكتبة العناصر.',correct:'true'},
+{type:'tf',text:'يمكن استخدام السجلات للحصول على معلومات حول أداء المعلمين دون المتعلمين.',correct:'false'},
+{type:'tf',text:'الدروس الإلكترونية التي تعتمد على شبكة الإنترنت لا تتضمن مقاطع فيديو نظراً لكبر حجمها.',correct:'false'},
+{type:'tf',text:'تستخدم المقاييس المتدرجة لتقييم أداء المتعلمين في النشاطات التربوية.',correct:'true'},
+{type:'tf',text:'قبل البدء في تصميم الدرس التفاعلي، ينبغي إجراء تحليل لبيئة التعلم.',correct:'true'},
+{type:'tf',text:'تحتوي لوحة الوحدات على اسم الفصل واسم الوحدة.',correct:'true'},
+{type:'tf',text:'يفضل تجزئة المهمات التعليمية الرئيسية إلى مهام فرعية.',correct:'true'},
+{type:'tf',text:'التغذية الراجعة عملية ممتدة تشمل كافة مراحل التصميم التعليمي.',correct:'true'},
+{type:'tf',text:'من أمثلة استراتيجيات التعلم المباشر استراتيجية حل المسائل.',correct:'true'},
+{type:'tf',text:'جميع الدروس التفاعلية تعتمد على شبكة الإنترنت.',correct:'false'},
+{type:'tf',text:'يمكن إضافة أسئلة ببرنامج كورس لاب من مكتبة الكائنات.',correct:'true'},
+{type:'tf',text:'التقويم الختامي للدرس التفاعلي يقيس مستوى المتعلمين أثناء عملية التعلم.',correct:'false'},
+{type:'tf',text:'التغذية الراجعة عملية تعقب مرحلة تصميم الدروس التفاعلية.',correct:'true'},
+{type:'tf',text:'الدروس الإلكترونية التي لا تعتمد على شبكة الإنترنت لا تعد من أنماط الدروس التفاعلية.',correct:'false'},
+{type:'tf',text:'يتم التحكم في ضبط إعدادات الأصوات المصاحبة للكائنات من خلال تبويب الصوت Sound.',correct:'true'},
+{type:'tf',text:'تعد مرحلة التقويم ملازمة لجميع مراحل التصميم، وتهدف إلى تحديد أوجه القصور.',correct:'true'},
+{type:'tf',text:'يمكن أن تكون مواقع الويب إحدى مصادر تجميع المحتوى التعليمي.',correct:'true'},
+{type:'tf',text:'عند عمل اختبار في برنامج CourseLab يمكنك التحكم في الحد الزمني للإجابة على السؤال.',correct:'true'},
+{type:'tf',text:'تقدم الدروس التفاعلية المعتمدة على شبكة الإنترنت من خلال أقراص مدمجة أو من خلال موقع إلكتروني.',correct:'false'},
+{type:'tf',text:'في مرحلة التنفيذ يتم تهيئة بيئة التعلم بتدريب المتعلمين والمعلمين.',correct:'true'},
+{type:'tf',text:'يوفر برنامج كورس لاب عدة أنواع للشخصيات المساعدة.',correct:'true'},
+{type:'tf',text:'الحاجة التعليمية هي الفجوة بين الأداء الحالي والأداء المتوقع للمتعلمين.',correct:'true'},
+{type:'tf',text:'تحتوي الدروس التفاعلية على عناصر الدرس والأمثلة والوسائط المتعددة الرقمية ولا تتضمن الأنشطة.',correct:'false'},
+{type:'tf',text:'التغذية الراجعة عملية تلي مرحلة التطوير بهدف التحقق من التصميم التعليمي الجيد للدرس التفاعلي.',correct:'false'},
+{type:'tf',text:'المحادثات الصوتية من أدوات التفاعل غير المتزامنة.',correct:'false'},
+{type:'tf',text:'يمكن إدراج النصوص بالشرائح دون إمكانية تغيير إعداداتها.',correct:'false'},
+{type:'tf',text:'مرحلة التنفيذ تشتمل على إجراء الاختبار التجريبي للدرس التفاعلي.',correct:'true'},
+{type:'tf',text:'يفضل تحديد السلوك المدخلي للمتعلمين قبل تحديد خصائصهم العامة.',correct:'true'},
+{type:'tf',text:'الإعدادات الافتراضية للكائنات هي الظهور التلقائي في الشريحة.',correct:'true'},
+{type:'tf',text:'يتضمن نموذج ADDIE ست مراحل للتصميم التعليمي.',correct:'false'},
+{type:'tf',text:'يتيح برنامج كورس لاب تعديل أسماء الشرائح.',correct:'true'},
+{type:'tf',text:'تحليل خصائص المتعلم يقصد به جمع بيانات حول المتعلم من خلال التعرف على خصائصه.',correct:'true'},
+{type:'tf',text:'يمكن استخدام إنترنت إكسبلورر لاستخدام برنامج Course Lab.',correct:'true'},
+{type:'tf',text:'يمكن نشر الدروس التفاعلية من خلال قائمة Run.',correct:'false'},
+{type:'tf',text:'يمكن إضافة وحدة جديدة من خلال قائمة View.',correct:'false'},
+{type:'tf',text:'تؤثر التغذية الراجعة سلباً على فاعلية الدروس التفاعلية.',correct:'false'},
+{type:'tf',text:'يطلق على المرحلة الأولى من مراحل نموذج ADDIE مرحلة التحليل.',correct:'true'},
+{type:'tf',text:'برنامج Course Lab هو أحد أنظمة تأليف المحتوى.',correct:'true'},
+{type:'tf',text:'يتضمن تصميم النشاط الجيد تحديد الظروف المكانية والزمانية لأدائه.',correct:'true'},
+{type:'tf',text:'يمكن التحكم في حجم الكائنات من خلال الماوس.',correct:'true'},
+{type:'tf',text:'كي يتم صياغة موضوع التعلم يجب أولاً تحديد احتياجات المتعلمين وخبراتهم السابقة وسرعة تعلمهم.',correct:'true'},
+{type:'tf',text:'من أنواع القوائم التي يوفرها برنامج كورس لاب القوائم القياسية.',correct:'true'},
+{type:'tf',text:'الأهداف العامة تمثل نواتج التعلم التي تصف الاستجابات التي تظهر في سلوك المتعلم.',correct:'false'},
+{type:'tf',text:'يمكن جعل الشخصية المساعدة تظهر كأنها ملف صوت.',correct:'false'},
+{type:'tf',text:'تعد المقابلات من الأدوات المناسبة لجمع المعلومات.',correct:'true'},
+{type:'tf',text:'شريحة العنوان هي أول شريحة تظهر عند تشغيل المحتوى.',correct:'true'},
+{type:'tf',text:'تعد اقتراحات أولياء الأمور من مصادر اشتقاق خصائص المتعلمين.',correct:'false'},
+{type:'tf',text:'تعد التعليقات جزءاً من منطقة العمل.',correct:'false'},
+{type:'tf',text:'يتضمن تحديد المهام الفرعية تحديد المتطلبات السابقة.',correct:'true'},
+{type:'tf',text:'تحتوي الشريحة الرئيسية على جميع الكائنات المشتركة بكل الشرائح.',correct:'true'},
+{type:'tf',text:'تعتبر الأنشطة التفاعلية والتغذية الراجعة الفورية بالدروس التفاعلية من مقومات إثراء عملية التعلم.',correct:'true'},
+{type:'tf',text:'يمكن تحديد الفجوة التعليمية بمقارنة الوضع الحالي بالمتوقع.',correct:'true'},
+{type:'tf',text:'لابد من تفعيل برنامج كورس لاب عند تحميله.',correct:'true'},
+{type:'tf',text:'يجب أن تتسم استراتيجية التعلم العامة بالمرونة.',correct:'true'},
+{type:'tf',text:'يمكن استعراض الدرس التفاعلي ببرنامج كورس لاب من قائمة View.',correct:'false'},
+{type:'tf',text:'تعد مرحلة التحليل حجر الأساس لباقي مراحل التصميم التعليمي.',correct:'true'},
+{type:'tf',text:'يتيح كورس لاب أنماطاً متعددة من البالونات.',correct:'true'},
+{type:'tf',text:'ينبغي على مصمم الدرس التفاعلي أن يحدد استراتيجية التعلم التي يرغب في الاعتماد عليها.',correct:'true'},
+{type:'tf',text:'الصوت والمؤثرات الصوتية هي أحاديث بأية لغة أو موسيقى أو نبرات صوتية كمؤثرات خاصة توضع في إطار تصميم الدرس التفاعلي.',correct:'true'},
+{type:'tf',text:'يمكن عرض شريحة العنوان دون إمكانية تحريرها.',correct:'false'},
+{type:'tf',text:'يمكن أن تنبع الحاجة التعليمية من رغبة المتعلمين.',correct:'false'},
+{type:'tf',text:'يسمح برنامج كورس لاب بإنشاء مقررات جديدة.',correct:'true'},
+{type:'tf',text:'تهتم مرحلة التصميم بوضع مخططات تطوير عملية التعليم.',correct:'true'},
+{type:'tf',text:'التعليقات هي كتلة نصية تدرج مع الشريحة.',correct:'true'},
+{type:'tf',text:'يمكن إضافة ملفات PDF ببرنامج كورس لاب.',correct:'true'},
+{type:'tf',text:'تستهدف التغذية الراجعة التحقق من فاعلية أدوات التقويم.',correct:'true'},
+{type:'tf',text:'الكائنات المركبة هي كائنات خارجية يمكن إضافتها وتحميلها إلى الكورس لاب.',correct:'true'},
+{type:'tf',text:'التصميم التعليمي هو عملية عشوائية تتناول الإجراءات اللازمة لتنظيم التعليم وتطويره وتنفيذه وتقويمه.',correct:'false'},
+{type:'tf',text:'عند إنتاج مقرر جديد لابد من تحديد اسمه وموقع تخزينه.',correct:'true'},
+{type:'tf',text:'يمكنك جمع معلومات حول الحاجات التعليمية للمتعلمين من المتعلمين أنفسهم.',correct:'true'},
+{type:'tf',text:'يسمح كورس لاب بتغيير موقع وترتيب الشرائح.',correct:'true'},
+];
+
+// ===== المتغيرات =====
+var studentName   = '';
+var current       = 0;
+var answers       = new Array(questions.length).fill(null);
+var timerInterval = null;
+var timeLeft      = 90 * 60;
+var examStarted   = false;
+
+// ===== بدء الاختبار =====
+function startExam() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var fromURL   = urlParams.get('s') || '';
+  var fromSS    = '';
+  try { fromSS = sessionStorage.getItem('pendingPreStudent') || ''; } catch(e){}
+  var inputEl   = document.getElementById('studentNameInput');
+  var fromInput = inputEl ? inputEl.value.trim() : '';
+  studentName   = fromURL || fromSS || fromInput;
+
+  if (!studentName) {
+    var err = document.getElementById('nameError');
+    if (err) err.classList.add('show');
+    return;
+  }
+
+  examStarted = true; document.body.classList.add("exam-active");
+  var overlay = document.getElementById('welcomeOverlay');
+  if (overlay) overlay.style.display = 'none';
+  var sn = document.getElementById('sidebarStudentName');
+  if (sn) sn.textContent = studentName;
+  var hn = document.getElementById('headerStudentName');
+  if (hn) hn.textContent = '👤 ' + studentName;
+
+  startTimer();
+  renderQuestion();
+}
+
+// ===== الوقت =====
+function startTimer() {
+  timerInterval = setInterval(function() {
+    timeLeft--;
+    var m = Math.floor(timeLeft/60).toString().padStart(2,'0');
+    var s = (timeLeft%60).toString().padStart(2,'0');
+    document.getElementById('timerDisplay').textContent = m + ':' + s;
+    if (timeLeft <= 0)   { clearInterval(timerInterval); submitExam(); }
+    if (timeLeft <= 600) { document.getElementById('timerDisplay').style.color = '#ef4444'; }
+  }, 1000);
+}
+
+// ===== عرض السؤال =====
+function renderQuestion() {
+  var q = questions[current];
+  document.getElementById('qNum').textContent     = 'سؤال ' + (current + 1);
+  document.getElementById('qText').textContent    = q.text;
+  document.getElementById('currentNum').textContent = current + 1;
+  document.getElementById('totalNum').textContent   = questions.length;
+
+  var secLabel = document.getElementById('sectionLabel');
+  if (q.type === 'mcq') {
+    secLabel.textContent      = '📝 المجموعة الأولى: اختيار من متعدد';
+    secLabel.style.background = '#d1fae5';
+    secLabel.style.color      = '#065f46';
+  } else {
+    secLabel.textContent      = '✔️ المجموعة الثانية: صواب أو خطأ';
+    secLabel.style.background = '#dbeafe';
+    secLabel.style.color      = '#1e40af';
+  }
+
+  var container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+
+  if (q.type === 'mcq') {
+    var letters = ['أ','ب','ت','ث'];
+    q.options.forEach(function(opt, i) {
+      var btn = document.createElement('button');
+      btn.className = 'option-btn' + (answers[current] === i ? ' selected' : '');
+      btn.innerHTML = '<span class="option-letter">' + letters[i] + '</span><span>' + opt + '</span>';
+      btn.onclick = function(){ selectMCQ(i); };
+      container.appendChild(btn);
+    });
+  } else {
+    var tfDiv = document.createElement('div');
+    tfDiv.className = 'tf-container';
+    var tBtn = document.createElement('button');
+    tBtn.className = 'tf-btn true-btn' + (answers[current] === 'true' ? ' selected' : '');
+    tBtn.innerHTML = '✅ صواب';
+    tBtn.onclick = function(){ selectTF('true'); };
+    var fBtn = document.createElement('button');
+    fBtn.className = 'tf-btn false-btn' + (answers[current] === 'false' ? ' selected' : '');
+    fBtn.innerHTML = '❌ خطأ';
+    fBtn.onclick = function(){ selectTF('false'); };
+    tfDiv.appendChild(tBtn);
+    tfDiv.appendChild(fBtn);
+    container.appendChild(tfDiv);
+  }
+
+  var nextBtn = document.getElementById('nextBtn');
+  if (current === questions.length - 1) {
+    nextBtn.textContent = '🏁 إنهاء الاختبار';
+    nextBtn.className = 'nav-btn btn-submit';
+  } else {
+    nextBtn.innerHTML = 'التالي &#x2B05;';
+    nextBtn.className = 'nav-btn btn-next';
+  }
+  updateProgress();
+}
+
+function selectMCQ(i) { answers[current] = i; renderQuestion(); }
+function selectTF(val) { answers[current] = val; renderQuestion(); }
+function prevQ() { if (current > 0) { current--; renderQuestion(); } }
+function nextQ() {
+  if (current === questions.length - 1) { submitExam(); }
+  else { current++; renderQuestion(); }
+}
+function updateProgress() {
+  var answered = answers.filter(function(a){ return a !== null; }).length;
+  document.getElementById('answeredCount').textContent  = answered;
+  document.getElementById('progressText').textContent   = answered + ' / ' + questions.length;
+  document.getElementById('progressBar').style.width    = (answered / questions.length * 100) + '%';
+}
+
+// ===== إنهاء الاختبار =====
+function submitExam() {
+  clearInterval(timerInterval);
+  var correct = 0, wrong = 0, unanswered = 0;
+  questions.forEach(function(q, i) {
+    if (answers[i] === null) { unanswered++; return; }
+    if (answers[i] === q.correct) correct++; else wrong++;
+  });
+  var pct = Math.round(correct / questions.length * 100);
+  document.getElementById('resultScore').textContent      = pct + '%';
+  document.getElementById('correctCount').textContent     = correct;
+  document.getElementById('wrongCount').textContent       = wrong;
+  document.getElementById('unansweredCount').textContent  = unanswered;
+  document.getElementById('resultIcon').textContent       = pct >= 50 ? '🎉' : '📚';
+  document.getElementById('resultDetail').innerHTML       =
+    'أجبت عن <strong>' + (questions.length - unanswered) + '</strong> سؤالاً من أصل <strong>' + questions.length + '</strong><br>درجتك: <strong>' + correct + '</strong> من <strong>' + questions.length + '</strong>';
+  document.getElementById('resultStudentName').textContent = '👤 ' + studentName;
+
+  // حفظ في localStorage لفتح البعدي
+  try {
+    var list = JSON.parse(localStorage.getItem('completedPreTest') || '[]');
+    var key  = studentName.trim().toLowerCase();
+    if (list.indexOf(key) === -1) { list.push(key); localStorage.setItem('completedPreTest', JSON.stringify(list)); }
+    localStorage.setItem('preTestCompleted', 'true');
+    localStorage.setItem('preTestStudentName', studentName.trim());
+    sessionStorage.removeItem('pendingPreStudent');
+    sessionStorage.setItem('donePreStudent', studentName);
+  } catch(e){}
+
+  document.getElementById('quizArea').style.display = 'none';
+  document.querySelector('.quiz-header').style.display = 'none';
+  document.getElementById('resultPanel').classList.add('show');
+}
+
+function sendWhatsApp() {
+  var correct    = parseInt(document.getElementById('correctCount').textContent);
+  var wrong      = parseInt(document.getElementById('wrongCount').textContent);
+  var unanswered = parseInt(document.getElementById('unansweredCount').textContent);
+  var pct        = Math.round(correct / questions.length * 100);
+  var msg = '📊 *نتيجة الاختبار التحصيلي القبلي*\n\n🎓 بيئة التعلم المدمج - كلية التربية النوعية\n\n👤 اسم الطالب: ' + studentName + '\n\n✅ الإجابات الصحيحة: ' + correct + '\n❌ الإجابات الخاطئة: ' + wrong + '\n⬜ لم يُجب عنها: ' + unanswered + '\n📈 النسبة المئوية: ' + pct + '%\n📝 الدرجة: ' + correct + ' / ' + questions.length;
+  var phone = '201000000000';
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ===== تشغيل تلقائي عند تحميل الصفحة =====
+document.addEventListener('DOMContentLoaded', function() {
+  // CSS قفل الناف أثناء الاختبار
+  var style = document.createElement('style');
+  style.textContent = 'body.exam-active .nav a.nav-exam-locked{opacity:.45;cursor:not-allowed!important;pointer-events:auto!important;}.body.exam-active .nav a.nav-exam-locked:hover{background:transparent!important;color:#e0f2f1!important;transform:none!important;box-shadow:none!important;border-color:rgba(167,243,208,0.5)!important;}.nav a.nav-exam-locked::after{content:"🔒";font-size:10px;margin-right:3px;}';
+  document.head.appendChild(style);
+
+  // منع النقر على الروابط المقفولة
+  document.querySelector('.nav').addEventListener('click', function(e) {
+    var link = e.target.closest('a');
+    if (link && link.classList.contains('nav-exam-locked') && examStarted) {
+      e.preventDefault();
+      showExamToast('لا يمكنك مغادرة الصفحة أثناء الاختبار');
+    }
+  });
+
+  // ابدأ الاختبار تلقائياً لو الاسم جاي في الـ URL أو sessionStorage
+  var urlParams = new URLSearchParams(window.location.search);
+  var fromURL   = urlParams.get('s') || '';
+  var fromSS    = '';
+  try { fromSS = sessionStorage.getItem('pendingPreStudent') || ''; } catch(e){}
+  if (fromURL || fromSS) {
+    var inputEl = document.getElementById('studentNameInput');
+    if (inputEl) inputEl.value = fromURL || fromSS;
+    setTimeout(startExam, 100);
+  }
+});
+
+function showExamToast(msg) {
+  var toast = document.getElementById('examToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'examToast';
+    toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1b4a4a;color:#fff;padding:12px 28px;border-radius:50px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 8px 28px rgba(27,74,74,.4);border:2px solid #2dd4bf;display:none;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = '🔒 ' + msg;
+  toast.style.display = 'block';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function(){ toast.style.display = 'none'; }, 3000);
+}
+</script>
+</body>
+</html>

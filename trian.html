@@ -183,6 +183,7 @@ body{display:flex;flex-direction:column;height:100vh}
 <nav class="nav">
   <a href="index.html">🏠 الرئيسية</a>
   <a href="aims.html">🎯 أهداف البيئة</a>
+  <a href="pretest.html">  التقويم</a>
   <a href="#" class="active">  📖 اختبار اساليب التعلم </a>
 
 </nav>
@@ -342,6 +343,20 @@ body{display:flex;flex-direction:column;height:100vh}
           <button class="rbtn rbtn-retry" id="retryBtn" onclick="restartTest()">
             🔄 إعادة الاختبار
             <span class="rbtn-tag">درجتك خارج المدى المحدد — حاول مجدداً</span>
+          </button>
+        </div>
+
+        <!-- زر تسليم النتيجة عبر واتساب -->
+        <div id="waBox" style="display:none;width:100%;max-width:480px;text-align:center;">
+          <button onclick="sendResultWhatsApp()"
+            style="width:100%;padding:11px 16px;border-radius:12px;border:none;cursor:pointer;
+                   background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;
+                   font-family:Cairo,sans-serif;font-size:13px;font-weight:700;
+                   display:flex;align-items:center;justify-content:center;gap:8px;
+                   box-shadow:0 4px 16px rgba(37,211,102,.4);transition:all .2s;"
+            onmouseover="this.style.boxShadow='0 6px 20px rgba(37,211,102,.6)';this.style.transform='translateY(-1px)'"
+            onmouseout="this.style.boxShadow='0 4px 16px rgba(37,211,102,.4)';this.style.transform='none'">
+            <span style="font-size:18px">&#x1F4AC;</span> تسليم النتيجة   
           </button>
         </div>
 
@@ -1274,6 +1289,29 @@ function showResults(){
       });
     }
   }
+
+  /* ── إظهار زر تسليم النتيجة عبر واتساب ── */
+  window._lastResult = { correct, total, badge, bcls };
+  document.getElementById('waBox').style.display = 'block';
+}
+
+/* ================================================================
+   WHATSAPP RESULT SUBMISSION
+================================================================ */
+function sendResultWhatsApp(){
+  const r = window._lastResult || {};
+  const correct = r.correct !== undefined ? r.correct : '—';
+  const total   = r.total   !== undefined ? r.total   : '—';
+  const badge   = r.badge   || '—';
+  const msg = `📊 *نتيجة اختبار الأشكال المتضمنة*
+
+✏️ *الدرجة:* ${correct} من ${total}
+🏷️ *التصنيف:* ${badge}
+
+📅 ${new Date().toLocaleDateString('ar-EG')}`;
+  /* ← ضع رقم الواتساب هنا مع كود الدولة بدون + مثال: 201001234567 */
+  const phone = '201069127003';
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
 /* ================================================================
@@ -1290,6 +1328,7 @@ function restartTest(){
   document.getElementById('resEl').classList.remove('on');
   document.getElementById('retryBox').style.display = 'none';
   document.getElementById('resBtns').style.display  = 'grid';
+  document.getElementById('waBox').style.display    = 'none';
 
   /* إظهار منطقة الاختبار مباشرةً */
   document.getElementById('waitEl').style.display = 'none';

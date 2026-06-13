@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التقويم </title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-main: #f0f4f4;
+    --bg-secondary: #1b4a4a;
+    --card-bg: #ffffff;
+    --primary: #1b6b5a;
+    --primary-light: #2dd4bf;
+    --accent: #0a8545;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border: #d1fae5;
+    --nav-bg: #1b5e5e;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+}
+
+body { display: flex; flex-direction: column; height: 100vh; }
+
+/* HEADER */
+.header {
+    background: var(--bg-secondary);
+    padding: 7px 20px;
+    text-align: center;
+    position: relative;
+    border-bottom: 2px solid #14b8a6;
+    flex-shrink: 0;
+}
+.header-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    max-width: 70%;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+.support-badge {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    background: var(--accent);
+    color: #fff;
+    padding: 1px 16px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* NAV */
+.nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    background: var(--nav-bg);
+    padding: 8px 16px;
+    flex-wrap: wrap;
+    border-bottom: 2px solid #0f766e;
+    flex-shrink: 0;
+}
+.nav a {
+    color: #e0f2f1;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 50px;
+    border: 2px solid rgba(167,243,208,.5);
+    transition: all .3s ease;
+}
+.nav a:hover {
+    background: #fff;
+    color: #1b5e5e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0,0,0,.15);
+}
+
+/* MAIN AREA */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 6px 20px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.main::before {
+    content: '';
+    position: absolute;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(45,212,191,.12) 0%, transparent 70%);
+    top: -80px; left: -80px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.main::after {
+    content: '';
+    position: absolute;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(10,133,69,.09) 0%, transparent 70%);
+    bottom: -50px; right: -50px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Title block */
+.title-block {
+    text-align: center;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+}
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 1.5px solid #6ee7b7;
+    color: var(--primary);
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 4px 18px;
+    border-radius: 30px;
+    margin-bottom: 10px;
+}
+.main-title {
+    font-size: 21px;
+    font-weight: 900;
+    color: var(--bg-secondary);
+    line-height: 1.4;
+}
+.title-line {
+    width: 56px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 10px;
+    margin: 8px auto 0;
+}
+
+/* CARDS ROW */
+.cards-row {
+    display: flex;
+    gap: 28px;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.test-card {
+    background: #fff;
+    border-radius: 20px;
+    width: 220px;
+    padding: 32px 24px 28px;
+    border: 1.5px solid #d1fae5;
+    box-shadow: 0 8px 32px rgba(27,74,74,.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    animation: cardUp .5s ease both;
+}
+
+.test-card:nth-child(1) { animation-delay: .08s; }
+.test-card:nth-child(2) { animation-delay: .2s; }
+
+@keyframes cardUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.test-card:hover:not(.locked-card) {
+    transform: translateY(-7px) scale(1.02);
+    box-shadow: 0 20px 48px rgba(27,107,90,.2);
+    border-color: var(--primary-light);
+}
+
+.test-card::before {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 5px;
+    border-radius: 0 20px 20px 0;
+}
+.test-card.pre::before  { background: linear-gradient(180deg, #1b6b5a, #2dd4bf); }
+.test-card.post::before { background: linear-gradient(180deg, #0a8545, #2dd4bf); }
+
+.test-card::after {
+    content: '';
+    position: absolute;
+    bottom: -22px; left: -22px;
+    width: 70px; height: 70px;
+    background: radial-gradient(circle, rgba(45,212,191,.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.icon-wrap {
+    width: 74px; height: 74px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    flex-shrink: 0;
+    transition: transform .3s ease;
+}
+.test-card.pre  .icon-wrap { background: linear-gradient(135deg, #ecfdf5, #a7f3d0); box-shadow: 0 6px 18px rgba(27,107,90,.18); }
+.test-card.post .icon-wrap { background: linear-gradient(135deg, #ecfdf5, #6ee7b7); box-shadow: 0 6px 18px rgba(10,133,69,.22); }
+
+.test-card:hover:not(.locked-card) .icon-wrap { transform: scale(1.1) rotate(-4deg); }
+
+.card-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 20px;
+    letter-spacing: .3px;
+}
+.test-card.pre  .card-tag { background: #d1fae5; color: #065f46; }
+.test-card.post .card-tag { background: #bbf7d0; color: #14532d; }
+
+.card-title {
+    font-size: 15.5px;
+    font-weight: 900;
+    color: var(--bg-secondary);
+    text-align: center;
+    line-height: 1.5;
+}
+
+.card-desc {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.7;
+}
+
+.card-cta {
+    margin-top: 4px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 8px 22px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity .2s;
+}
+.test-card:hover:not(.locked-card) .card-cta { opacity: .88; }
+
+/* ========== LOCKED CARD STATE ========== */
+.test-card.locked-card {
+    cursor: not-allowed;
+    opacity: 0.72;
+    background: #f8fffe;
+    border-color: #bbf7d0;
+}
+.test-card.locked-card .card-cta {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* Completed Badge */
+.completed-badge {
+    display: none;
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: linear-gradient(135deg, #0a8545, #2dd4bf);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 20px;
+    gap: 4px;
+    align-items: center;
+    box-shadow: 0 3px 10px rgba(10,133,69,.35);
+    z-index: 10;
+    animation: badgePop .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+.completed-badge.show { display: flex; }
+
+@keyframes badgePop {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+/* Lock icon overlay */
+.lock-overlay {
+    display: none;
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    font-size: 22px;
+    z-index: 10;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.15));
+}
+.locked-card .lock-overlay { display: block; }
+
+/* ========== PASSWORD MODAL ========== */
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(27,74,74,.55);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn .25s ease;
+}
+.modal-backdrop.open { display: flex; }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.modal-box {
+    background: #fff;
+    border-radius: 24px;
+    padding: 36px 32px 32px;
+    width: 90%;
+    max-width: 380px;
+    box-shadow: 0 24px 64px rgba(27,74,74,.28);
+    position: relative;
+    animation: slideUp .3s cubic-bezier(.34,1.4,.64,1) both;
+    border-top: 5px solid var(--primary);
+}
+
+@keyframes slideUp {
+    from { transform: translateY(40px) scale(.95); opacity: 0; }
+    to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.modal-close {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    background: #f3f4f6;
+    border: none;
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
+}
+.modal-close:hover { background: #e5e7eb; }
+
+.modal-icon {
+    text-align: center;
+    font-size: 44px;
+    margin-bottom: 8px;
+}
+
+.modal-title {
+    text-align: center;
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--bg-secondary);
+    margin-bottom: 4px;
+}
+
+.modal-subtitle {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 22px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 2px solid #d1fae5;
+    border-radius: 12px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    color: var(--text-main);
+    background: #f9fffe;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    text-align: right;
+}
+.form-group input:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(45,212,191,.15);
+}
+.form-group input::placeholder { color: #b0b8c1; }
+
+.modal-error {
+    background: #fef2f2;
+    border: 1.5px solid #fca5a5;
+    color: #b91c1c;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 12px;
+    display: none;
+}
+.modal-error.show { display: block; }
+
+.modal-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: opacity .2s, transform .15s;
+    margin-top: 4px;
+}
+.modal-btn:hover { opacity: .9; transform: translateY(-1px); }
+.modal-btn:active { transform: scale(.98); }
+
+/* Already completed message inside modal */
+.already-done-msg {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 2px solid #6ee7b7;
+    border-radius: 14px;
+    padding: 18px 16px;
+    text-align: center;
+    display: none;
+}
+.already-done-msg.show { display: block; }
+.already-done-msg .check-big { font-size: 38px; margin-bottom: 6px; }
+.already-done-msg p {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #065f46;
+    line-height: 1.7;
+}
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+    .cards-row { gap: 18px; }
+    .test-card { width: 90vw; max-width: 280px; }
+    .support-badge { position: static; transform: none; display: inline-block; margin-bottom: 6px; }
+    .header { padding-top: 8px; }
+    .header-title { max-width: 100%; font-size: 14px; }
+    .nav a { font-size: 12px; padding: 5px 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-title">
+        بيئة التعلم المدمج لتنمية مهارات إنتاج الدروس التفاعلية لدى طلاب كلية التربية النوعية
+    </div>
+</div>
+
+<nav class="nav">
+  <a href="index.html">🏠 الرئيسية</a>
+  <a href="aims.html">🎯 أهداف البيئة</a>
+  <a href="pretest.html">  التقويم</a>
+  <a href="trian.html">  📖 اختبار اساليب التعلم </a>
+</nav>
+
+<div class="main">
+
+  <div class="title-block">
+    <div class="eyebrow">📝 الاختبارات التحصيلية</div>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="cards-row">
+
+    <!-- الاختبار القبلي -->
+    <div class="test-card pre" id="preCard" onclick="openModal('pre')">
+      <div class="lock-overlay">🔒</div>
+      <div class="completed-badge" id="preBadge">✅ تم الإجابة</div>
+      <div class="icon-wrap">📋</div>
+      <div class="card-tag">قبل الدراسة</div>
+      <div class="card-title">الاختبار التحصيلي<br>القبلي</div>
+      <div class="card-desc">يُقيس مستوى معرفتك الحالية<br>قبل البدء في المحتوى التعليمي</div>
+      <button class="card-cta">ابدأ الاختبار ←</button>
+    </div>
+
+    <!-- الاختبار البعدي -->
+    <div class="test-card post" id="postCard" onclick="openModal('post')">
+      <div class="lock-overlay">🔒</div>
+      <div class="icon-wrap">🏆</div>
+      <div class="card-tag">بعد الدراسة</div>
+      <div class="card-title">الاختبار التحصيلي<br>البعدي</div>
+      <div class="card-desc">يُقيس مدى تقدمك واكتسابك<br>للمهارات بعد إتمام التعلم</div>
+      <button class="card-cta">ابدأ الاختبار ←</button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ======== PASSWORD MODAL ======== -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="handleBackdropClick(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <div class="modal-icon" id="modalIcon">🔐</div>
+    <div class="modal-title" id="modalTitle">أدخل بياناتك للدخول</div>
+    <div class="modal-subtitle" id="modalSubtitle">يرجى إدخال اسمك وكلمة المرور للمتابعة</div>
+
+    <!-- Already completed message (pre-test only) -->
+    <div class="already-done-msg" id="alreadyDoneMsg">
+      <div class="check-big">✅</div>
+      <p>لقد أجبت على الاختبار القبلي من قبل<br>ولا يمكن إعادة تقديمه مرة أخرى.</p>
+    </div>
+
+    <!-- Form fields -->
+    <div id="formFields">
+      <div class="form-group">
+        <label for="studentName">👤 اسم الطالب</label>
+        <input type="text" id="studentName" placeholder="أدخل اسمك الكامل" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="passwordInput">🔑 كلمة المرور</label>
+        <input type="password" id="passwordInput" placeholder="أدخل كلمة المرور" autocomplete="new-password"
+               onkeydown="if(event.key==='Enter') submitModal()">
+      </div>
+      <div class="modal-error" id="modalError"></div>
+      <button class="modal-btn" onclick="submitModal()">دخول ←</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  إعدادات — غيّر الباسورد والوجهات هنا فقط
+// ============================================================
+var PASSWORDS    = { pre: "pre1234", post: "post1234" };
+var DESTINATIONS = { pre: "befor.html", post: "after.html" };
+// ============================================================
+
+// روابط تُقفل حتى إتمام القبلي (poster وcontact متاحان دائماً)
+var LOCKED_HREFS = ['mods.html'];
+
+var currentType = null;
+
+// ===== localStorage =====
+function getCompletedList() {
+  try { return JSON.parse(localStorage.getItem('completedPreTest') || '[]'); }
+  catch(e) { return []; }
+}
+function hasCompleted(name) {
+  return getCompletedList().indexOf(name.trim().toLowerCase()) !== -1;
+}
+
+// ===== قفل/فتح الناف =====
+function lockNav() {
+  document.querySelectorAll('.nav a').forEach(function(link) {
+    var href = link.getAttribute('href') || '';
+    if (LOCKED_HREFS.indexOf(href) !== -1) {
+      link.classList.add('nav-locked');
+      link.dataset.orig = href;
+      link.removeAttribute('href');
+    }
+  });
+}
+function unlockNav() {
+  document.querySelectorAll('.nav a.nav-locked').forEach(function(link) {
+    link.classList.remove('nav-locked');
+    if (link.dataset.orig) { link.setAttribute('href', link.dataset.orig); delete link.dataset.orig; }
+  });
+}
+
+// ===== فتح المودال =====
+function openModal(type) {
+  if (type === 'post' && !localStorage.getItem('preTestCompleted')) {
+    showToast('أكمل الاختبار القبلي أولاً قبل الدخول للاختبار البعدي');
+    return;
+  }
+  currentType = type;
+  document.getElementById('studentName').value   = '';
+  document.getElementById('passwordInput').value = '';
+  document.getElementById('modalError').style.display = 'none';
+  document.getElementById('alreadyDoneMsg').classList.remove('show');
+  document.getElementById('formFields').style.display = 'block';
+  document.getElementById('modalIcon').textContent    = type === 'pre' ? '📋' : '🏆';
+  document.getElementById('modalTitle').textContent   = type === 'pre' ? 'الاختبار التحصيلي القبلي' : 'الاختبار التحصيلي البعدي';
+  document.getElementById('modalSubtitle').textContent = 'أدخل اسمك وكلمة المرور للبدء';
+  document.getElementById('modalBackdrop').classList.add('open');
+  setTimeout(function(){ document.getElementById('studentName').focus(); }, 300);
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+  currentType = null;
+}
+function handleBackdropClick(e) {
+  if (e.target === document.getElementById('modalBackdrop')) closeModal();
+}
+
+// ===== إرسال البيانات =====
+function submitModal() {
+  var name = document.getElementById('studentName').value.trim();
+  var pass = document.getElementById('passwordInput').value;
+
+  if (!name) { showModalError('يرجى إدخال اسمك أولاً'); return; }
+  if (!pass)  { showModalError('يرجى إدخال كلمة المرور'); return; }
+  if (!currentType || !PASSWORDS[currentType]) { showModalError('خطأ، أعد المحاولة'); return; }
+
+  // مقارنة الباسورد حرفياً بعد إزالة المسافات من الطرفين فقط
+  if (pass.trim() !== PASSWORDS[currentType]) {
+    showModalError('كلمة المرور غير صحيحة، حاول مرة أخرى');
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('passwordInput').focus();
+    return;
+  }
+
+  // القبلي: منع التكرار
+  if (currentType === 'pre' && hasCompleted(name)) {
+    document.getElementById('formFields').style.display = 'none';
+    document.getElementById('alreadyDoneMsg').classList.add('show');
+    document.getElementById('modalTitle').textContent = 'تم تقديم الاختبار مسبقاً';
+    document.getElementById('modalSubtitle').textContent = '';
+    document.getElementById('modalIcon').textContent = '⚠️';
+    return;
+  }
+
+  // كل شيء صحيح — انتقل
+  var key = currentType === 'pre' ? 'pendingPreStudent' : 'pendingPostStudent';
+  try { sessionStorage.setItem(key, name); } catch(e) {}
+  var url = DESTINATIONS[currentType] + '?s=' + encodeURIComponent(name);
+  window.location.href = url;
+}
+
+function showModalError(msg) {
+  var el = document.getElementById('modalError');
+  el.textContent = '⚠️ ' + msg;
+  el.style.display = 'block';
+}
+
+// ===== Toast =====
+function showToast(msg) {
+  var toast = document.getElementById('lockToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'lockToast';
+    toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1b4a4a;color:#fff;padding:12px 28px;border-radius:50px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 8px 28px rgba(27,74,74,.4);border:2px solid #2dd4bf;display:none;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = '🔒 ' + msg;
+  toast.style.display = 'block';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function(){ toast.style.display = 'none'; }, 3500);
+}
+
+// ===== تهيئة الصفحة =====
+document.addEventListener('DOMContentLoaded', function() {
+  // CSS للروابط المقفولة
+  var style = document.createElement('style');
+  style.textContent = '.nav a.nav-locked{opacity:.45;cursor:not-allowed!important;pointer-events:auto!important;}.nav a.nav-locked:hover{background:transparent!important;color:#e0f2f1!important;transform:none!important;box-shadow:none!important;}.nav a.nav-locked::after{content:"🔒";font-size:10px;margin-right:4px;}';
+  document.head.appendChild(style);
+
+  // منع النقر على المقفول
+  document.querySelector('.nav').addEventListener('click', function(e) {
+    var link = e.target.closest('a');
+    if (link && link.classList.contains('nav-locked')) {
+      e.preventDefault();
+      showToast('أكمل الاختبار القبلي أولاً للوصول لهذا القسم');
+    }
+  });
+
+  var preIsDone   = !!localStorage.getItem('preTestCompleted');
+  var doneStudent = sessionStorage.getItem('donePreStudent') || '';
+
+  if (preIsDone) {
+    unlockNav();
+    if (doneStudent) {
+      document.getElementById('preCard').classList.add('locked-card');
+      document.getElementById('preBadge').classList.add('show');
+      document.getElementById('preCard').querySelector('.card-cta').textContent = '✅ تم الإجابة';
+    }
+    document.getElementById('postCard').classList.remove('locked-card');
+    document.getElementById('postCard').querySelector('.card-cta').textContent = 'ابدأ الاختبار ←';
+  } else {
+    lockNav();
+    var postCard = document.getElementById('postCard');
+    postCard.classList.add('locked-card');
+    postCard.querySelector('.card-cta').textContent = '🔒 متاح بعد القبلي';
+    if (doneStudent) {
+      document.getElementById('preCard').classList.add('locked-card');
+      document.getElementById('preBadge').classList.add('show');
+      document.getElementById('preCard').querySelector('.card-cta').textContent = '✅ تم الإجابة';
+    }
+  }
+});
+</script>
+</body>
+</html>
