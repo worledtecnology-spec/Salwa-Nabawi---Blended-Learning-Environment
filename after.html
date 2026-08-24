@@ -65,57 +65,28 @@ body { display: flex; flex-direction: column; height: 100vh; }
     transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.15);
 }
 
-/* ========== محتوى الصفحة ========== */
+/* ========== محتوى الصفحة (لا يوجد جانب تعليمات بعد الآن) ========== */
 .page-content {
     flex: 1; display: flex; overflow: hidden; gap: 0;
 }
 
-/* ========== لوحة التعليمات ========== */
-.instructions-panel {
-    width: 28%; background: var(--bg-secondary); color: #e0f2f1;
-    padding: 14px 16px; overflow: hidden; border-left: 2px solid #0f766e;
-    display: flex; flex-direction: column; gap: 10px;
-}
-.instructions-panel h2 {
-    color: #2dd4bf; font-size: 15px; margin: 0 0 2px 0;
-    border-bottom: 1px solid rgba(45,212,191,0.3); padding-bottom: 6px;
-    flex-shrink: 0;
-}
-.inst-box {
-    background: rgba(255,255,255,0.07); border-radius: 10px;
-    padding: 9px 12px; font-size: 12px; line-height: 1.7; flex-shrink: 0;
-}
-.inst-box strong { color: #2dd4bf; }
-.inst-item {
-    display: flex; align-items: flex-start; gap: 7px; margin-bottom: 4px; font-size: 12px;
-}
-.inst-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
-.progress-wrap { flex-shrink: 0; }
-.progress-label { font-size: 11px; color: #94a3b8; margin-bottom: 4px; display: flex; justify-content: space-between; }
-.progress-bar-outer { background: rgba(255,255,255,0.1); border-radius: 20px; height: 7px; overflow: hidden; }
-.progress-bar-inner { height: 100%; border-radius: 20px; background: linear-gradient(90deg,#0a8545,#2dd4bf); transition: width 0.4s ease; }
-.section-badges { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
 .badge {
     padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
 }
-.badge.mcq { background: rgba(45,212,191,0.2); color: #2dd4bf; border: 1px solid #2dd4bf; }
-.badge.tf { background: rgba(10,133,69,0.25); color: #6ee7b7; border: 1px solid #6ee7b7; }
-.timer-display {
-    background: rgba(255,255,255,0.08); border-radius: 10px; padding: 8px 12px;
-    text-align: center; font-size: 26px; font-weight: 700; color: #2dd4bf; letter-spacing: 3px;
-    flex-shrink: 0;
-}
-.timer-label { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 2px; flex-shrink: 0; }
+.badge.mcq { background: rgba(45,212,191,0.15); color: var(--primary); border: 1px solid #2dd4bf; }
+.badge.tf { background: rgba(10,133,69,0.12); color: var(--accent); border: 1px solid #6ee7b7; }
 
-/* ========== منطقة الاختبار ========== */
+/* ========== منطقة الاختبار (بعرض كامل) ========== */
 .quiz-panel {
-    flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 16px;
-    gap: 12px;
+    flex: 1; display: none; flex-direction: column; overflow: hidden; padding: 16px;
+    gap: 10px;
 }
+.quiz-panel.show { display: flex; }
 
-/* ========== شريط العنوان ========== */
+/* ========== شريط العنوان: يضم اسم الطالب + المؤقت + عداد الأسئلة ========== */
 .quiz-header {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    gap: 10px;
     background: #fff; border-radius: 12px; padding: 10px 18px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.07); flex-shrink: 0;
 }
@@ -125,6 +96,24 @@ body { display: flex; flex-direction: column; height: 100vh; }
 }
 .quiz-counter { font-size: 13px; color: var(--text-muted); font-weight: 600; }
 .quiz-counter span { color: var(--primary); font-weight: 700; }
+
+.quiz-timer-inline {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg-secondary); color: #2dd4bf;
+    border-radius: 20px; padding: 5px 16px;
+    font-size: 17px; font-weight: 800; letter-spacing: 2px;
+}
+.quiz-timer-inline .tlabel { font-size: 11px; font-weight: 700; color: #a7f3d0; letter-spacing: 0; }
+
+/* ========== شريط التقدم ضمن منطقة الاختبار ========== */
+.quiz-progress-row {
+    flex-shrink: 0; background: #fff; border-radius: 12px; padding: 8px 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+.progress-wrap { flex-shrink: 0; }
+.progress-label { font-size: 11.5px; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; font-weight: 600; }
+.progress-bar-outer { background: var(--border); border-radius: 20px; height: 7px; overflow: hidden; }
+.progress-bar-inner { height: 100%; border-radius: 20px; background: linear-gradient(90deg,#0a8545,#2dd4bf); transition: width 0.4s ease; }
 
 /* ========== كارت السؤال ========== */
 .question-card {
@@ -292,57 +281,104 @@ body { display: flex; flex-direction: column; height: 100vh; }
 
 /* ========== شاشة الترحيب / إدخال الاسم ========== */
 .welcome-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(27,74,74,0.7);
-    backdrop-filter: blur(8px);
-    z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
 }
 .welcome-box {
     background: #fff;
-    border-radius: 28px;
-    padding: 44px 40px 38px;
-    width: 90%;
-    max-width: 440px;
-    box-shadow: 0 28px 70px rgba(27,74,74,.32);
-    text-align: center;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    overflow: hidden;
+    box-shadow: none;
     border-top: 6px solid var(--primary);
-    animation: wbPop .4s cubic-bezier(.34,1.4,.64,1) both;
 }
+.welcome-split {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+}
+.welcome-col {
+    padding: 14px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 0;
+}
+.welcome-col-instructions {
+    flex: 1.15;
+    text-align: center;
+    border-left: 2px dashed var(--border);
+}
+.welcome-col-entry {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+@media (max-width: 760px) {
+    .welcome-split { flex-direction: column; }
+    .welcome-col-instructions { border-left: none; border-bottom: 2px dashed var(--border); }
+    .welcome-col { flex: 1; min-height: 0; padding: 8px 18px; }
+    .welcome-instructions { overflow-y: auto; }
+}
+.welcome-instructions {
+    text-align: right;
+    background: #f0fdf4;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 16px;
+    margin-bottom: 0;
+    overflow: hidden;
+}
+.welcome-instructions h3 {
+    font-size: 12.5px; color: var(--primary); margin: 0 0 6px; text-align: center;
+}
+.welcome-instructions ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.welcome-instructions li {
+    font-size: 10.8px; color: var(--text-main); line-height: 1.35;
+    display: flex; align-items: flex-start; gap: 6px;
+}
+.welcome-instructions li b { color: var(--primary); }
+.welcome-instructions .wi-icon { flex-shrink: 0; }
+.welcome-instructions hr { border: none; border-top: 1px dashed #a7f3d0; margin: 1px 0; }
 @keyframes wbPop {
     from { transform: translateY(30px) scale(.95); opacity: 0; }
     to   { transform: translateY(0) scale(1); opacity: 1; }
 }
-.welcome-icon { font-size: 56px; margin-bottom: 10px; }
+.welcome-icon { font-size: 34px; margin-bottom: 4px; }
 .welcome-title {
-    font-size: 20px; font-weight: 900;
-    color: var(--bg-secondary); margin-bottom: 6px;
+    font-size: 16px; font-weight: 900;
+    color: var(--bg-secondary); margin-bottom: 4px;
 }
 .welcome-sub {
-    font-size: 13px; color: var(--text-muted);
-    line-height: 1.7; margin-bottom: 26px;
+    font-size: 11px; color: var(--text-muted);
+    line-height: 1.4; margin-bottom: 10px;
 }
 .welcome-info-row {
-    display: flex; gap: 10px; justify-content: center;
-    margin-bottom: 24px; flex-wrap: wrap;
+    display: flex; gap: 6px; justify-content: center;
+    margin-bottom: 10px; flex-wrap: wrap;
 }
 .welcome-chip {
     background: #ecfdf5; border: 1.5px solid #6ee7b7;
-    color: #065f46; font-size: 12px; font-weight: 700;
-    padding: 5px 14px; border-radius: 20px;
+    color: #065f46; font-size: 10.5px; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px;
 }
-.name-group { margin-bottom: 20px; text-align: right; }
+.name-group { margin-bottom: 10px; text-align: right; }
 .name-group label {
-    display: block; font-size: 13.5px; font-weight: 700;
-    color: var(--text-main); margin-bottom: 8px;
+    display: block; font-size: 12px; font-weight: 700;
+    color: var(--text-main); margin-bottom: 5px;
 }
 .name-input {
-    width: 100%; padding: 13px 16px;
-    border: 2px solid #d1fae5; border-radius: 14px;
-    font-family: 'Cairo', sans-serif; font-size: 15px;
+    width: 100%; padding: 10px 14px;
+    border: 2px solid #d1fae5; border-radius: 12px;
+    font-family: 'Cairo', sans-serif; font-size: 14px;
     color: var(--text-main); background: #f9fffe;
     outline: none; text-align: right;
     transition: border-color .2s, box-shadow .2s;
@@ -356,16 +392,16 @@ body { display: flex; flex-direction: column; height: 100vh; }
 .name-error {
     background: #fef2f2; border: 1.5px solid #fca5a5;
     color: #b91c1c; border-radius: 10px;
-    padding: 8px 14px; font-size: 12.5px; font-weight: 600;
-    text-align: center; margin-bottom: 14px; display: none;
+    padding: 6px 12px; font-size: 11.5px; font-weight: 600;
+    text-align: center; margin-bottom: 10px; display: none;
 }
 .name-error.show { display: block; }
 .start-btn {
-    width: 100%; padding: 14px;
+    width: 100%; padding: 12px;
     background: linear-gradient(135deg, var(--primary), var(--primary-light));
     color: #fff; font-family: 'Cairo', sans-serif;
-    font-size: 15px; font-weight: 700;
-    border: none; border-radius: 16px; cursor: pointer;
+    font-size: 14px; font-weight: 700;
+    border: none; border-radius: 14px; cursor: pointer;
     transition: opacity .2s, transform .15s;
     box-shadow: 0 6px 20px rgba(27,107,90,.3);
 }
@@ -377,37 +413,13 @@ body { display: flex; flex-direction: column; height: 100vh; }
     .header { padding-top: 10px; }
     .header-title { max-width: 100%; font-size: 15px; }
     .nav a { font-size: 12px; padding: 5px 10px; }
-    .instructions-panel { display: none; }
     .quiz-panel { padding: 10px; }
+    .quiz-header { justify-content: center; text-align: center; }
 }
 </style>
 </head>
 <body>
 
-<!-- ======== شاشة إدخال اسم الطالب ======== -->
-<div class="welcome-overlay" id="welcomeOverlay">
-  <div class="welcome-box">
-    <div class="welcome-icon">🏆</div>
-    <div class="welcome-title">الاختبار التحصيلي البعدي</div>
-    <div class="welcome-sub">
-      بيئة التعلم المدمج لتنمية مهارات إنتاج الدروس التفاعلية<br>
-      يرجى إدخال اسمك قبل البدء في الاختبار
-    </div>
-    <div class="welcome-info-row">
-      <span class="welcome-chip">⏱️ 90 دقيقة</span>
-      <span class="welcome-chip">📝 160 سؤال</span>
-      <span class="welcome-chip">💯 160 درجة</span>
-    </div>
-    <div class="name-group">
-      <label for="studentNameInput">👤 اسم الطالب / الطالبة</label>
-      <input type="text" id="studentNameInput" class="name-input"
-             placeholder="اكتب اسمك الكامل هنا..."
-             onkeydown="if(event.key==='Enter') startExam()">
-    </div>
-    <div class="name-error" id="nameError">⚠️ يرجى كتابة اسمك أولاً قبل البدء</div>
-    <button class="start-btn" onclick="startExam()">🚀 ابدأ الاختبار الآن</button>
-  </div>
-</div>
 
 <div class="header">
     <div class="header-title">بيئة التعلم المدمج لتنمية مهارات إنتاج الدروس التفاعلية لدى طلاب كلية التربية النوعية</div>
@@ -422,38 +434,75 @@ body { display: flex; flex-direction: column; height: 100vh; }
 
 <div class="page-content">
 
-    <!-- لوحة التعليمات -->
-    <div class="instructions-panel">
-        <h2>📋 تعليمات الاختبار</h2>
+<!-- ======== شاشة إدخال اسم الطالب ======== -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-box">
+    <div class="welcome-split">
 
-        <!-- بطاقة اسم الطالب -->
-        <div class="student-card">
-            <div class="student-avatar">👤</div>
-            <div class="student-card-info">
-                <div class="student-card-label">الطالب / الطالبة</div>
-                <div class="student-card-name" id="sidebarStudentName">—</div>
-            </div>
+      <!-- النصف الأيمن: التعليمات -->
+      <div class="welcome-col welcome-col-instructions">
+        <div class="welcome-icon">🏆</div>
+        <div class="welcome-title">الاختبار التحصيلي البعدي</div>
+        <div class="welcome-sub">
+          بيئة التعلم المدمج لتنمية مهارات إنتاج الدروس التفاعلية
+        </div>
+        <div class="welcome-info-row">
+          <span class="welcome-chip">⏱️ 90 دقيقة</span>
+          <span class="welcome-chip">📝 160 سؤال</span>
+          <span class="welcome-chip">💯 160 درجة</span>
+          <span class="welcome-chip">🎯 الحد الأدنى للنجاح: 50%</span>
         </div>
 
-        <div class="inst-box">
-            <div class="inst-item"><span class="inst-icon">📌</span><span>اقرأ كل سؤال بعناية قبل الإجابة</span></div>
-            <div class="inst-item"><span class="inst-icon">✅</span><span>أجب عن جميع الأسئلة قبل التسليم</span></div>
-            <div class="inst-item"><span class="inst-icon">⏱️</span><span>راقب الوقت المتبقي باستمرار</span></div>
-            <div class="inst-item"><span class="inst-icon">📲</span><span>ستُرسل النتيجة للباحثة عبر واتساب</span></div>
-            <div class="inst-item"><span class="inst-icon">🔒</span><span>لا تُعرض الإجابة الصحيحة أثناء الاختبار</span></div>
+        <div class="welcome-instructions">
+          <h3>📋 تعليمات الاختبار</h3>
+          <ul>
+            <li><span class="wi-icon">📌</span><span>اقرأ كل سؤال بعناية قبل اختيار إجابتك.</span></li>
+            <li><span class="wi-icon">↩️</span><span>يمكنك الرجوع لأي سؤال سابق وتعديل إجابتك متى شئت.</span></li>
+            <li><span class="wi-icon">✅</span><span>راجع جميع إجاباتك قبل الضغط على زر "إنهاء الاختبار".</span></li>
+            <li><span class="wi-icon">🔢</span><span>عدد الأسئلة: <b>160</b> سؤالاً (80 اختيار من متعدد + 80 صواب وخطأ).</span></li>
+            <li><span class="wi-icon">💯</span><span>درجة كل سؤال: <b>درجة واحدة</b> — الدرجة الكلية للاختبار: <b>160 درجة</b>.</span></li>
+            <li><span class="wi-icon">🎯</span><span>الحد الأدنى لاجتياز الاختبار: <b>50%</b> (80 درجة فأكثر).</span></li>
+            <hr>
+            <li><span class="wi-icon">🟢</span><span>في حال تحقيق الحد الأدنى: ستنتقل مباشرة إلى اختبار أسلوب التعلم.</span></li>
+            <li><span class="wi-icon">🟠</span><span>في حال عدم تحقيق الحد الأدنى: يظهر لك تنبيه بمراجعة المحتوى التعليمي مرة أخرى.</span></li>
+            <hr>
+            <li><span class="wi-icon">⏱️</span><span>زمن الاختبار: <b>90 دقيقة</b> من لحظة الضغط على زر "ابدأ الاختبار".</span></li>
+            <li><span class="wi-icon">⏰</span><span>عند انتهاء الوقت: يُسلَّم الاختبار تلقائيًا بالإجابات المسجلة حتى تلك اللحظة.</span></li>
+            <li><span class="wi-icon">🔒</span><span>لن تظهر الإجابة الصحيحة أو درجة السؤال أثناء أداء الاختبار.</span></li>
+            <li><span class="wi-icon">🖥️</span><span>إذا ظهر شريط تمرير (Scroll) أو بدا أي جزء من الاختبار مقصوصًا: صغّر حجم التكبير في المتصفح (Browser Zoom) بالضغط على <b>Ctrl</b> و<b>−</b> معًا حتى تظهر الصفحة كاملة بدون تمرير.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- النصف الأيسر: الدخول -->
+      <div class="welcome-col welcome-col-entry">
+        <div class="welcome-icon">🚀</div>
+        <div class="welcome-title">جاهز للبدء؟</div>
+        <div class="welcome-sub">يرجى إدخال اسمك قبل البدء في الاختبار</div>
+        <div class="name-group">
+          <label for="studentNameInput">👤 اسم الطالب / الطالبة</label>
+          <input type="text" id="studentNameInput" class="name-input"
+                 placeholder="اكتب اسمك الكامل هنا..."
+                 onkeydown="if(event.key==='Enter') startExam()">
+        </div>
+        <div class="name-error" id="nameError">⚠️ يرجى كتابة اسمك أولاً قبل البدء</div>
+        <button class="start-btn" onclick="startExam()">🚀 ابدأ الاختبار الآن</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+        <!-- منطقة الاختبار (بعرض كامل، تضم اسم الطالب والمؤقت والتقدم) -->
+    <div class="quiz-panel">
+        <div class="quiz-header">
+            <div class="quiz-student-tag" id="headerStudentName">👤 —</div>
+            <div class="quiz-section-label" id="sectionLabel">المجموعة الأولى: اختيار من متعدد</div>
+            <div class="quiz-timer-inline"><span class="tlabel">⏳ الوقت المتبقي</span><span id="timerDisplay">90:00</span></div>
+            <div class="quiz-counter">السؤال <span id="currentNum">1</span> من <span id="totalNum">160</span></div>
         </div>
 
-        <div>
-            <div class="timer-display" id="timerDisplay">90:00</div>
-            <div class="timer-label">⏳ الوقت المتبقي</div>
-        </div>
-
-        <div class="section-badges">
-            <div class="badge mcq">💡 اختيار من متعدد: 80</div>
-            <div class="badge tf">✔️ صواب وخطأ: 80</div>
-        </div>
-
-        <div class="progress-wrap">
+        <div class="quiz-progress-row">
             <div class="progress-label">
                 <span>التقدم</span>
                 <span id="progressText">0 / 160</span>
@@ -461,22 +510,6 @@ body { display: flex; flex-direction: column; height: 100vh; }
             <div class="progress-bar-outer">
                 <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
             </div>
-        </div>
-
-        <div class="inst-box" style="font-size:11px; color:#94a3b8; line-height:1.8;">
-            <strong style="color:#2dd4bf">📊 تفاصيل الاختبار:</strong><br>
-            • المجموعة الأولى: اختيار من متعدد (80 س)<br>
-            • المجموعة الثانية: صواب أو خطأ (80 س)<br>
-            • الدرجة الكلية: <strong style="color:#2dd4bf">160 درجة</strong>
-        </div>
-    </div>
-
-    <!-- منطقة الاختبار -->
-    <div class="quiz-panel">
-        <div class="quiz-header">
-            <div class="quiz-section-label" id="sectionLabel">المجموعة الأولى: اختيار من متعدد</div>
-            <div class="quiz-student-tag" id="headerStudentName">👤 —</div>
-            <div class="quiz-counter">السؤال <span id="currentNum">1</span> من <span id="totalNum">160</span></div>
         </div>
 
         <!-- كارت السؤال -->
@@ -518,11 +551,9 @@ body { display: flex; flex-direction: column; height: 100vh; }
                 </div>
             </div>
             <div class="result-detail" id="resultDetail"></div>
+            <div class="result-status" id="resultStatus" style="width:100%; border-radius:14px; padding:12px 16px; font-size:13px; font-weight:700; line-height:1.8;"></div>
             <div class="result-actions">
-                <button class="wa-btn" onclick="sendWhatsApp()">
-                    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                    إرسال النتيجة للباحثة عبر واتساب
-                </button>
+                <button class="home-btn" id="goLearningStyleBtn" onclick="goToLearningStyle()" style="display:none; background:linear-gradient(135deg,#1b6b5a,#2dd4bf);">📖 الانتقال الآن إلى اختبار أسلوب التعلم ←</button>
                 <a href="index.html" class="home-btn">🏠 العودة للصفحة الرئيسية</a>
             </div>
         </div>
@@ -725,6 +756,8 @@ function startExam() {
   examStarted = true; document.body.classList.add("exam-active");
   var overlay = document.getElementById('welcomeOverlay');
   if (overlay) overlay.style.display = 'none';
+  var qp = document.querySelector('.quiz-panel');
+  if (qp) qp.classList.add('show');
   var sn = document.getElementById('sidebarStudentName');
   if (sn) sn.textContent = studentName;
   var hn = document.getElementById('headerStudentName');
@@ -769,7 +802,7 @@ function renderQuestion() {
   container.innerHTML = '';
 
   if (q.type === 'mcq') {
-    var letters = ['أ','ب','ت','ث'];
+    var letters = ['أ','ب','ج','د'];
     q.options.forEach(function(opt, i) {
       var btn = document.createElement('button');
       btn.className = 'option-btn' + (answers[current] === i ? ' selected' : '');
@@ -836,6 +869,24 @@ function submitExam() {
     'أجبت عن <strong>' + (questions.length - unanswered) + '</strong> سؤالاً من أصل <strong>' + questions.length + '</strong><br>درجتك: <strong>' + correct + '</strong> من <strong>' + questions.length + '</strong>';
   document.getElementById('resultStudentName').textContent = '👤 ' + studentName;
 
+  var PASS_PCT = 50;
+  var statusEl = document.getElementById('resultStatus');
+  var goBtn    = document.getElementById('goLearningStyleBtn');
+  if (pct >= PASS_PCT) {
+    statusEl.style.background = '#ecfdf5';
+    statusEl.style.color = '#065f46';
+    statusEl.style.border = '2px solid #6ee7b7';
+    statusEl.textContent = '🎉 تهانينا! لقد حققت الحد الأدنى للنجاح (' + PASS_PCT + '%). سيتم نقلك تلقائيًا إلى اختبار أسلوب التعلم خلال لحظات...';
+    goBtn.style.display = 'flex';
+    setTimeout(goToLearningStyle, 3000);
+  } else {
+    statusEl.style.background = '#fff7ed';
+    statusEl.style.color = '#9a3412';
+    statusEl.style.border = '2px solid #fdba74';
+    statusEl.textContent = '📚 لم تحقق الحد الأدنى (' + PASS_PCT + '%) في الاختبار البعدي. يُرجى مراجعة المحتوى التعليمي جيدًا، ثم يمكنك العودة والمحاولة مرة أخرى.';
+    goBtn.style.display = 'none';
+  }
+
   try {
     sessionStorage.removeItem('pendingPostStudent');
   } catch(e){}
@@ -845,14 +896,8 @@ function submitExam() {
   document.getElementById('resultPanel').classList.add('show');
 }
 
-function sendWhatsApp() {
-  var correct    = parseInt(document.getElementById('correctCount').textContent);
-  var wrong      = parseInt(document.getElementById('wrongCount').textContent);
-  var unanswered = parseInt(document.getElementById('unansweredCount').textContent);
-  var pct        = Math.round(correct / questions.length * 100);
-  var msg = '📊 *نتيجة الاختبار التحصيلي البعدي*\n\n🎓 بيئة التعلم المدمج - كلية التربية النوعية\n\n👤 اسم الطالب: ' + studentName + '\n\n✅ الإجابات الصحيحة: ' + correct + '\n❌ الإجابات الخاطئة: ' + wrong + '\n⬜ لم يُجب عنها: ' + unanswered + '\n📈 النسبة المئوية: ' + pct + '%\n📝 الدرجة: ' + correct + ' / ' + questions.length;
-  var phone = '201000000000';
-  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+function goToLearningStyle() {
+  window.location.href = 'trian.html';
 }
 
 // ===== تشغيل تلقائي عند تحميل الصفحة =====
@@ -894,5 +939,36 @@ function showExamToast(msg) {
   toast._t = setTimeout(function(){ toast.style.display = 'none'; }, 3000);
 }
 </script>
+<script>
+(function(){
+  function showLockToast(){
+    var toast = document.getElementById('trianLockToast');
+    if(!toast){
+      toast = document.createElement('div');
+      toast.id = 'trianLockToast';
+      toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1b4a4a;color:#fff;padding:12px 28px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;box-shadow:0 8px 28px rgba(27,74,74,.4);border:2px solid #2dd4bf;font-family:Cairo,sans-serif;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = '🔒 أكمل الاختبار التحصيلي القبلي أولاً للوصول لاختبار أساليب التعلم';
+    toast.style.display = 'block';
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ toast.style.display='none'; }, 3500);
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    var style = document.createElement('style');
+    style.textContent = '.nav a.nav-locked{opacity:.45;cursor:not-allowed!important;pointer-events:auto!important;}.nav a.nav-locked:hover{background:transparent!important;transform:none!important;box-shadow:none!important;}.nav a.nav-locked::after{content:"🔒";font-size:10px;margin-right:4px;}';
+    document.head.appendChild(style);
+
+    var link = document.querySelector('.nav a[href="trian.html"]');
+    if(link && !localStorage.getItem('preTestCompleted')){
+      link.classList.add('nav-locked');
+      link.dataset.orig = link.getAttribute('href');
+      link.removeAttribute('href');
+      link.addEventListener('click', function(e){ e.preventDefault(); showLockToast(); });
+    }
+  });
+})();
+</script>
+
 </body>
 </html>

@@ -27,8 +27,15 @@ body{display:flex;flex-direction:column;height:100vh}
 .nav a{color:#e0f2f1;text-decoration:none;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:50px;border:1.5px solid rgba(167,243,208,.4);transition:all .2s;}
 .nav a:hover{background:#fff;color:#1b5e5e}
 
-/* LAYOUT — 30/70 split */
-.layout{flex:1;display:grid;grid-template-columns:30% 70%;gap:12px;padding:10px 12px;overflow:hidden;min-height:0;}
+/* LAYOUT — شاشة تعليمات مستقلة ثم منطقة اختبار بعرض كامل */
+.layout{flex:1;display:flex;gap:12px;padding:10px 12px;overflow:hidden;min-height:0;}
+
+/* شاشة التعليمات المستقلة (تظهر أولاً بملء الشاشة) */
+.instr-overlay{
+  position:fixed;inset:0;background:rgba(27,74,74,.7);backdrop-filter:blur(8px);
+  z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.instr-overlay .card{width:100%;max-width:640px;max-height:92vh;box-shadow:0 28px 70px rgba(27,74,74,.32);}
 
 /* CARD */
 .card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1.5px solid var(--border);display:flex;flex-direction:column;overflow:hidden;min-height:0;}
@@ -188,9 +195,28 @@ body{display:flex;flex-direction:column;height:100vh}
 
 </nav>
 
-<div class="layout">
+<!-- ========== قفل الوصول: يظهر افتراضيًا ويُخفى فقط إذا أنهى الطالب الاختبار القبلي ========== -->
+<div id="accessLock" style="position:fixed;inset:0;background:rgba(27,74,74,.85);backdrop-filter:blur(8px);z-index:5000;display:flex;align-items:center;justify-content:center;padding:20px;font-family:'Cairo',sans-serif;">
+  <div style="background:#fff;border-radius:20px;max-width:460px;width:100%;padding:30px 26px;text-align:center;box-shadow:0 28px 70px rgba(27,74,74,.4);">
+    <div style="font-size:48px;margin-bottom:8px;">🔒</div>
+    <div style="font-size:17px;font-weight:800;color:#1b4a4a;margin-bottom:10px;">لا يمكنك دخول اختبار أساليب التعلم بعد</div>
+    <div style="font-size:13.5px;color:#4b5563;line-height:1.8;margin-bottom:20px;">
+      يجب عليك أولًا أداء وإنهاء <strong>الاختبار التحصيلي القبلي</strong> قبل أن يُتاح لك الدخول إلى اختبار أساليب التعلم.
+    </div>
+    <a href="pretest.html" style="display:inline-block;background:linear-gradient(135deg,#1b6b5a,#2dd4bf);color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px 26px;border-radius:12px;box-shadow:0 6px 18px rgba(27,107,90,.3);">
+      🏁 اذهب للاختبار التحصيلي القبلي
+    </a>
+  </div>
+</div>
+<script>
+  /* لا يظهر اختبار أساليب التعلم إلا بعد إنهاء الاختبار التحصيلي القبلي */
+  if (localStorage.getItem('preTestCompleted')) {
+    document.getElementById('accessLock').style.display = 'none';
+  }
+</script>
 
-  <!-- ========== RIGHT CARD: INSTRUCTIONS (30%) ========== -->
+<!-- ========== شاشة التعليمات المستقلة (تظهر أولاً بملء الشاشة) ========== -->
+<div class="instr-overlay" id="instrOverlay">
   <div class="card">
     <div class="card-h">📋 تعليمات</div>
     <div class="card-b">
@@ -251,11 +277,14 @@ body{display:flex;flex-direction:column;height:100vh}
         <div class="sec-head">🚀 ابدأ الآن</div>
         <div class="inst-body">
           <ul>
-            <li>عند انتهاء الوقت تظهر الإجابة الصحيحة <strong>مرسومة</strong> داخل الشكل.</li>
+            <li>⏱️ يوجد <strong>مؤقت</strong> لكل قسم: دقيقتان للتدريب، و٥ دقائق لكل من القسم الثاني والثالث.</li>
+            <li>✅ إذا انتهيت من الإجابة قبل نفاد الوقت، اضغط <strong>"تأكيد الإجابة"</strong> مباشرة ولا تنتظر انتهاء المؤقت.</li>
+            <li>⏰ إذا نفد الوقت قبل أن تُجيب: يُسجَّل السؤال تلقائياً وتظهر <strong>الإجابة الصحيحة مرسومة</strong> باللون الأخضر.</li>
             <li>بعد كل الأسئلة ستظهر <strong>نتيجتك وتصنيفك</strong>.</li>
             <li>النتيجة تُبنى على القسمين الثاني والثالث فقط.</li>
           </ul>
-          <div class="box-y">⚠️ الزمن يبدأ فور ضغط "ابدأ".</div>
+          <div class="box-y">⚠️ يبدأ مؤقت كل قسم تلقائياً بمجرد دخولك إليه.</div>
+          <div class="box-g">🖥️ إذا لاحظت ظهور شريط تمرير (Scroll) أو أن أي جزء من عناصر الاختبار مقصوص: قم بتصغير حجم التكبير في المتصفح (Browser Zoom) بالضغط على <strong>Ctrl</strong> و<strong>−</strong> معًا (أو <strong>⌘</strong> و<strong>−</strong> على ماك) خطوة تلو الأخرى حتى تظهر الصفحة كاملة بدون تمرير.</div>
 
           <!-- Simple shapes reference -->
           <div class="sec-head" style="margin-top:10px">📐 الأشكال البسيطة</div>
@@ -275,9 +304,11 @@ body{display:flex;flex-direction:column;height:100vh}
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ========== LEFT CARD: TEST (70%) ========== -->
-  <div class="card">
+<div class="layout">
+  <!-- ========== منطقة الاختبار (تملأ الشاشة بعد إغلاق شاشة التعليمات) ========== -->
+  <div class="card" style="flex:1;">
     <div class="card-h">🖊️ منطقة الاختبار</div>
     <div class="card-b">
 
@@ -285,7 +316,7 @@ body{display:flex;flex-direction:column;height:100vh}
       <div class="wait" id="waitEl">
         <div style="font-size:44px">📝</div>
         <div><strong>اقرأ التعليمات أولاً</strong></div>
-        <div style="font-size:11.5px">ثم اضغط "ابدأ الاختبار" في الكارت الأيمن</div>
+        <div style="font-size:11.5px">ثم اضغط "ابدأ الاختبار" في شاشة التعليمات</div>
       </div>
 
       <!-- Section break -->
@@ -346,27 +377,9 @@ body{display:flex;flex-direction:column;height:100vh}
           </button>
         </div>
 
-        <!-- زر تسليم النتيجة عبر واتساب -->
-        <div id="waBox" style="display:none;width:100%;max-width:480px;text-align:center;">
-          <button onclick="sendResultWhatsApp()"
-            style="width:100%;padding:11px 16px;border-radius:12px;border:none;cursor:pointer;
-                   background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;
-                   font-family:Cairo,sans-serif;font-size:13px;font-weight:700;
-                   display:flex;align-items:center;justify-content:center;gap:8px;
-                   box-shadow:0 4px 16px rgba(37,211,102,.4);transition:all .2s;"
-            onmouseover="this.style.boxShadow='0 6px 20px rgba(37,211,102,.6)';this.style.transform='translateY(-1px)'"
-            onmouseout="this.style.boxShadow='0 4px 16px rgba(37,211,102,.4)';this.style.transform='none'">
-            <span style="font-size:18px">&#x1F4AC;</span> تسليم النتيجة   
-          </button>
-        </div>
-
-        <div class="res-btns" id="resBtns">
-          <!-- معتمد: btnA (ثابت) + btnC (مرن) -->
-          <button class="rbtn rbtn-a" id="btnA" onclick="goTo('btnA')" style="display:none">🏆 انتقل إلى بيئة التعلم<span class="rbtn-tag">نمط الدعم الثابت — معتمد</span></button>
-          <button class="rbtn rbtn-c" id="btnC" onclick="goTo('btnC')" style="display:none">📚 انتقل إلى بيئة التعلم<span class="rbtn-tag">نمط الدعم المرن — معتمد</span></button>
-          <!-- مستقل: btnB (ثابت) + btnD (مرن) -->
-          <button class="rbtn rbtn-b" id="btnB" onclick="goTo('btnB')" style="display:none">🎯 انتقل إلى بيئة التعلم<span class="rbtn-tag">نمط الدعم الثابت — مستقل</span></button>
-          <button class="rbtn rbtn-d" id="btnD" onclick="goTo('btnD')" style="display:none">🌱 انتقل إلى بيئة التعلم<span class="rbtn-tag">نمط الدعم المرن — مستقل</span></button>
+        <div class="res-btns" id="resBtns" style="display:block;text-align:center;">
+          <div id="autoRouteMsg" style="font-size:12.5px;color:#065f46;background:#ecfdf5;border:1px solid #6ee7b7;border-radius:10px;padding:8px 12px;margin-bottom:8px;"></div>
+          <button class="rbtn" id="goEnvBtn" onclick="goToAssignedEnv()" style="width:100%;display:none;">🚀 انتقل الآن إلى بيئة التعلم المناسبة</button>
         </div>
         <div id="adminLinks" style="display:none">
           <span id="urlA">https://worledtecnology-spec.github.io/Fixed-Support--g1/</span>
@@ -378,6 +391,27 @@ body{display:flex;flex-direction:column;height:100vh}
     </div>
   </div>
 </div>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+/* ── إعداد Firebase (عدّاد متوازن مضمون لنمط الدعم) ── */
+const firebaseConfig = {
+  apiKey: "AIzaSyDc8YHgGfZl5Rc97sLFI0NI-No9KrYWy1c",
+  authDomain: "trian-support.firebaseapp.com",
+  databaseURL: "https://trian-support-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "trian-support",
+  storageBucket: "trian-support.firebasestorage.app",
+  messagingSenderId: "65202851992",
+  appId: "1:65202851992:web:7f8fa7fa816d2c3f31c0ed"
+};
+let _fbReady = false;
+try{
+  firebase.initializeApp(firebaseConfig);
+  _fbReady = true;
+}catch(e){
+  _fbReady = false; /* لو فشل التحميل (مثلاً بدون إنترنت) هيشتغل بالنسخة الاحتياطية المحلية تلقائيًا */
+}
+</script>
 <script>
 /* ================================================================
    SIMPLE SHAPE DRAWING FUNCTIONS
@@ -599,10 +633,10 @@ const CX = {
     c.beginPath();c.moveTo(W*.5,H*.06);c.lineTo(W*.5,H*.94);c.stroke();
     c.beginPath();c.moveTo(W*.06,H*.5);c.lineTo(W*.94,H*.5);c.stroke();
   },
-  /* CX SEC2-2: 3 overlapping parallelograms — rect hidden */
+  /* CX SEC2-2: 2 skewed parallelograms (distractors) + 1 genuine unskewed rectangle — rect hidden */
   cx_rect_para(c,W,H){
     c.strokeStyle='#374151';c.lineWidth=1.8;c.lineJoin='round';
-    [[W*.06,H*.06,W*.4,H*.28,W*.1],[W*.28,H*.36,W*.4,H*.28,W*.1],[W*.5,H*.66,W*.4,H*.28,W*.1]].forEach(([x,y,w,h,sk])=>{
+    [[W*.06,H*.06,W*.4,H*.28,W*.1],[W*.28,H*.36,W*.4,H*.28,0],[W*.5,H*.66,W*.4,H*.28,W*.1]].forEach(([x,y,w,h,sk])=>{
       c.beginPath();c.moveTo(x+sk,y);c.lineTo(x+w+sk,y);c.lineTo(x+w,y+h);c.lineTo(x,y+h);c.closePath();c.stroke();
     });
   },
@@ -617,15 +651,17 @@ const CX = {
     c.beginPath();c.moveTo(W*.06,H*.06);c.lineTo(W*.94,H*.94);c.stroke();
     c.beginPath();c.moveTo(W*.94,H*.06);c.lineTo(W*.06,H*.94);c.stroke();
   },
-  /* CX SEC2-4: uniform grid — shelves hidden */
+  /* CX SEC2-4: vertical-line grid (distractor) + genuine shelves shape hidden within it */
   cx_shelves_grid(c,W,H){
     c.strokeStyle='#374151';c.lineWidth=1.6;
     for(let i=0;i<=4;i++){
-      const v=W*(.08+i*.21),h=H*(.08+i*.21);
+      const v=W*(.08+i*.21);
       c.beginPath();c.moveTo(v,H*.06);c.lineTo(v,H*.94);c.stroke();
-      c.beginPath();c.moveTo(W*.06,h);c.lineTo(W*.94,h);c.stroke();
     }
     c.lineWidth=2;c.strokeRect(W*.06,H*.06,W*.88,H*.88);
+    /* الشكل البسيط الحقيقي (الرفوف) — نفس أبعاد SH.shelves تمامًا */
+    c.lineWidth=1.6;
+    for(let i=0;i<3;i++) c.strokeRect(W*.1,H*(.1+i*.28),W*.8,H*.25);
   },
   /* CX SEC2-5: octagon with diagonals — T hidden */
   cx_T_octagon(c,W,H){
@@ -778,7 +814,7 @@ const Q = [
   },
   { sec:2, sf:SH.rect,     cf:CX.cx_rect_para,
     lbl:'(٢) وضح حدود الشكل البسيط (ل) داخل الشكل المعقد',
-    ans:[{x:.06,y:.34},{x:.9,y:.34},{x:.9,y:.64},{x:.06,y:.64}]
+    ans:[{x:.28,y:.36},{x:.68,y:.36},{x:.68,y:.64},{x:.28,y:.64}]
   },
   { sec:2, sf:SH.crown,    cf:CX.cx_crown_sunburst,
     lbl:'(٣) وضح حدود الشكل البسيط (ز) داخل الشكل المعقد',
@@ -786,7 +822,7 @@ const Q = [
   },
   { sec:2, sf:SH.shelves,  cf:CX.cx_shelves_grid,
     lbl:'(٤) وضح حدود الشكل البسيط (هـ) داخل الشكل المعقد',
-    ans:[{x:.06,y:.06},{x:.94,y:.06},{x:.94,y:.94},{x:.06,y:.94}]
+    ans:[{x:.1,y:.1},{x:.9,y:.1},{x:.9,y:.91},{x:.1,y:.91}]
   },
   { sec:2, sf:SH.T,        cf:CX.cx_T_octagon,
     lbl:'(٥) وضح حدود الشكل البسيط (ب) داخل الشكل المعقد',
@@ -917,6 +953,7 @@ function goStep(d){
 ================================================================ */
 function startTest(){
   if(active)return; active=true;
+  document.getElementById('instrOverlay').style.display='none';
   document.getElementById('waitEl').style.display='none';
   document.getElementById('tstEl').style.display='flex';
   ans=Q.map(()=>null);
@@ -993,35 +1030,59 @@ function onTimeout(){
 /* ================================================================
    CANVAS SETUP & DRAWING
 ================================================================ */
+/* عنصر الرسم الحالي — نفس أسلوب الرسم (سحب مستمر بالماوس) لكل الأسئلة دون استثناء.
+   الاستماع للحركة والرفع على مستوى النافذة (وليس فقط على الكانفاس) يمنع انقطاع/اختفاء
+   الرسم إذا خرج المؤشر قليلاً عن حدود الكانفاس أثناء رسم شكل كبير قريب من الحواف. */
+let curCanvas=null, curCtx=null;
+
+function _pos(e){
+  const r=curCanvas.getBoundingClientRect(), src=e.touches?e.touches[0]:e;
+  let x=(src.clientX-r.left)*(curCanvas.width/r.width);
+  let y=(src.clientY-r.top)*(curCanvas.height/r.height);
+  x=Math.max(0,Math.min(curCanvas.width,x));
+  y=Math.max(0,Math.min(curCanvas.height,y));
+  return{x,y};
+}
+function _redrawCur(){
+  if(!curCtx||!curCanvas)return;
+  const q=Q[qIdx];
+  curCtx.clearRect(0,0,curCanvas.width,curCanvas.height);
+  q.cf(curCtx,curCanvas.width,curCanvas.height);
+  if(path.length>1){
+    curCtx.beginPath();curCtx.moveTo(path[0].x,path[0].y);
+    path.forEach(p=>curCtx.lineTo(p.x,p.y));
+    curCtx.strokeStyle='#dc2626';curCtx.lineWidth=2.8;
+    curCtx.lineJoin='round';curCtx.lineCap='round';curCtx.stroke();
+  }
+}
+function _drawStart(e){
+  if(answered||!curCanvas)return;
+  if(e.type==='touchstart')e.preventDefault();
+  drawing=true;path=[];path.push(_pos(e));
+}
+function _drawMove(e){
+  if(!drawing||answered||!curCanvas)return;
+  if(e.type==='touchmove')e.preventDefault();
+  path.push(_pos(e));_redrawCur();
+}
+function _drawEnd(){ drawing=false; }
+
+/* تُسجَّل مرة واحدة فقط عند تحميل الصفحة */
+window.addEventListener('mousemove',_drawMove);
+window.addEventListener('mouseup',_drawEnd);
+window.addEventListener('touchmove',_drawMove,{passive:false});
+window.addEventListener('touchend',_drawEnd);
+
 function setupCanvas(q){
   const old=document.getElementById('tstC');
   const nc=old.cloneNode(true); old.parentNode.replaceChild(nc,old);
-  const ctx=nc.getContext('2d');
+  curCanvas=nc; curCtx=nc.getContext('2d');
   // Draw complex shape
-  q.cf(ctx,nc.width,nc.height);
+  q.cf(curCtx,nc.width,nc.height);
   path=[];
 
-  function pos(e){
-    const r=nc.getBoundingClientRect(),src=e.touches?e.touches[0]:e;
-    return{x:(src.clientX-r.left)*(nc.width/r.width),y:(src.clientY-r.top)*(nc.height/r.height)};
-  }
-  function redraw(){
-    ctx.clearRect(0,0,nc.width,nc.height);
-    q.cf(ctx,nc.width,nc.height);
-    if(path.length>1){
-      ctx.beginPath();ctx.moveTo(path[0].x,path[0].y);
-      path.forEach(p=>ctx.lineTo(p.x,p.y));
-      ctx.strokeStyle='#dc2626';ctx.lineWidth=2.8;
-      ctx.lineJoin='round';ctx.lineCap='round';ctx.stroke();
-    }
-  }
-  nc.addEventListener('mousedown',e=>{if(answered)return;drawing=true;path=[];path.push(pos(e));});
-  nc.addEventListener('mousemove',e=>{if(!drawing||answered)return;path.push(pos(e));redraw();});
-  nc.addEventListener('mouseup',()=>drawing=false);
-  nc.addEventListener('mouseleave',()=>drawing=false);
-  nc.addEventListener('touchstart',e=>{e.preventDefault();if(answered)return;drawing=true;path=[];path.push(pos(e));},{passive:false});
-  nc.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing||answered)return;path.push(pos(e));redraw();},{passive:false});
-  nc.addEventListener('touchend',()=>drawing=false);
+  nc.addEventListener('mousedown',_drawStart);
+  nc.addEventListener('touchstart',_drawStart,{passive:false});
 }
 
 function clearDraw(){
@@ -1052,9 +1113,9 @@ function submitAns(){
   const ucx=(ubb.minX+ubb.maxX)/2, ucy=(ubb.minY+ubb.maxY)/2;
   const acx=(abb.minX+abb.maxX)/2, acy=(abb.minY+abb.maxY)/2;
   const maxDim=Math.max(aw,ah,1);
-  const centerOk=Math.hypot(ucx-acx,ucy-acy)/maxDim < 0.45;
-  // Stricter thresholds: IoU>0.55, size similarity>0.45, center close
-  const ok = iou>0.55 && ss>0.45 && centerOk;
+  const centerOk=Math.hypot(ucx-acx,ucy-acy)/maxDim < 0.5;
+  // عتبات مقبولة: IoU>0.5، تقارب الحجم>0.4، تقارب المركز — لتقليل الرفض الخاطئ للإجابات الصحيحة
+  const ok = iou>0.5 && ss>0.4 && centerOk;
 
   ans[qIdx]=ok; updProg();
 
@@ -1168,24 +1229,28 @@ function continueSection(){
    RESULTS
    ─────────────────────────────────────────────────────────────
    نظام الدرجات (بناءً على القسمين 2 و3 — إجمالي 18 سؤال):
-     مستقل  : الدرجة > 0  و < 18  (أي 1–17)
-     معتمد  : الدرجة > 0  و < 9   (أي 1–8)
+     مستقل عن المجال (Field Independent) : 0 < الدرجة < 18   (أي 9–17)
+     معتمد على المجال (Field Dependent)  : 0 < الدرجة < 9    (أي 1–8)
 
-   ملاحظة: الحدود 0 و18 لا تُحسب لأي فئة (>0 و<18 صريحة)
+   نمط الدعم (ثابت / مرن) يُحدَّد تلقائيًا بحيث يتساوى العدد بين
+   المجموعتين داخل كل تصنيف (معتمد يتوزع بالتساوي بين ثابت/مرن،
+   ومستقل كذلك بشكل منفصل) — عبر عدّاد مشترك على Firebase Realtime
+   Database (بمعاملة ذرّية transaction تمنع تضارب العدّ حتى لو
+   طالبان أنهيا الاختبار في نفس اللحظة من جهازين مختلفين)، يعمل من
+   أي جهاز (معمل مشترك أو جهاز شخصي)، مع نسخة احتياطية محلية
+   (بالتناوب على نفس الجهاز) لو تعذّر الاتصال بالإنترنت. لا يظهر
+   للطالب أي اختيار — يتم تحديد البيئة تلقائيًا.
+
+   ══ لتغيير روابط البيئات: عدّل الكائن URLS أدناه فقط ══
    ─────────────────────────────────────────────────────────────
-   الأزرار الأربعة — تُفعَّل بحسب التصنيف:
-     مستقل  → A  و  B  مفعّلان  |  C  و  D  معطّلان
-     معتمد  → C  و  D  مفعّلان  |  A  و  B  معطّلان
-     (درجة 0 أو 18: كل الأزرار مفعّلة — حالة حافة)
+*/
 
-   ══ لتغيير روابط الأزرار: عدّل الكائن URLS أدناه فقط ══
-
-/* ★ عدّل الروابط هنا — كل مفتاح يقابل زراً ★ */
+/* ★ عدّل الروابط هنا — كل مفتاح يقابل توليفة (تصنيف + نمط دعم) ★ */
 const URLS = {
-  btnA: 'https://worledtecnology-spec.github.io/Fixed-Support--g1/',    // معتمد — نمط الدعم الثابت
-  btnB: 'https://worledtecnology-spec.github.io/Fixed-Support--g2/',     // مستقل — نمط الدعم ثابت
-  btnC: 'https://worledtecnology-spec.github.io/Flexible-Support---g3/',    // معتمد — نمط الدعم المرن (بديل)
-  btnD: 'https://worledtecnology-spec.github.io/Flexible-Support---g4/',     // مستقل — نمط الدعم المرن
+  btnA: 'https://worledtecnology-spec.github.io/Fixed-Support--g1/',        // معتمد + دعم ثابت
+  btnB: 'https://worledtecnology-spec.github.io/Fixed-Support--g2/',        // مستقل + دعم ثابت
+  btnC: 'https://worledtecnology-spec.github.io/Flexible-Support---g3/',    // معتمد + دعم مرن
+  btnD: 'https://worledtecnology-spec.github.io/Flexible-Support---g4/',    // مستقل + دعم مرن
 };
 
 function goTo(btn){
@@ -1193,7 +1258,33 @@ function goTo(btn){
   if(url) window.location.href = url;
 }
 
-function showResults(){
+function goToAssignedEnv(){
+  if(window._assignedBtn) goTo(window._assignedBtn);
+}
+
+/* ── تحديد نمط الدعم بالتساوي (ثابت/مرن) عبر Firebase (معاملة ذرّية)، مع نسخة احتياطية محلية ── */
+async function getBalancedSupportType(bcls){
+  const path = bcls === 'dep' ? 'counters/dep' : 'counters/ind';
+  if(_fbReady){
+    try{
+      const ref = firebase.database().ref(path);
+      const result = await ref.transaction(current => (current || 0) + 1);
+      if(result.committed && typeof result.snapshot.val() === 'number'){
+        return (result.snapshot.val() % 2 === 1) ? 'fixed' : 'flex';
+      }
+      throw new Error('transaction not committed');
+    }catch(e){
+      /* يكمل تلقائيًا على النسخة الاحتياطية بالأسفل */
+    }
+  }
+  /* نسخة احتياطية: تناوب محلي على نفس الجهاز لو تعذّر الاتصال بـ Firebase */
+  const localKey = 'localSupportCounter_' + bcls;
+  const local = (parseInt(localStorage.getItem(localKey) || '0', 10)) + 1;
+  localStorage.setItem(localKey, local);
+  return (local % 2 === 1) ? 'fixed' : 'flex';
+}
+
+async function showResults(){
   clearInterval(timerInt);
   document.getElementById('tstEl').style.display='none';
   document.getElementById('sbkEl').classList.remove('on');
@@ -1212,8 +1303,7 @@ function showResults(){
   const DEP_MAX = 9;    // معتمد: 0 < درجة < 9
 
   let icon, badge, bcls, det, scoreMsg, scoreInfoCls;
-  let activeBtn  = [];   // أزرار مفعّلة
-  let disableBtn = [];   // أزرار معطّلة
+  let needsRouting = false;
 
   if (correct > 0 && correct < DEP_MAX) {
     /* ─── معتمد على المجال ─── */
@@ -1221,7 +1311,7 @@ function showResults(){
     det='تميل إلى النمط المعتمد على المجال. يمكنك تحسين مهارتك من خلال الأنشطة التدريبية المخصصة في بيئة التعلم.';
     scoreMsg=`درجتك ${correct} تقع في المدى (0 < درجة < 9) → نمط معتمد على المجال`;
     scoreInfoCls='dep-info';
-    activeBtn=['btnC','btnD']; disableBtn=['btnA','btnB'];
+    needsRouting = true;
 
   } else if (correct >= DEP_MAX && correct < IND_MAX) {
     /* ─── مستقل عن المجال ─── */
@@ -1229,7 +1319,7 @@ function showResults(){
     det='لديك قدرة عالية على تمييز الأشكال المتضمنة. تنتمي إلى النمط المستقل وتتميز في التحليل والتفكير المجرد.';
     scoreMsg=`درجتك ${correct} تقع في المدى (0 < درجة < 18) → نمط مستقل عن المجال`;
     scoreInfoCls='';
-    activeBtn=['btnA','btnB']; disableBtn=['btnC','btnD'];
+    needsRouting = true;
 
   } else if (correct === 0) {
     /* ─── درجة صفر: إعادة الاختبار ─── */
@@ -1237,7 +1327,6 @@ function showResults(){
     det='حصلت على صفر درجة. لا يمكن تحديد أسلوب التعلم المناسب. يُرجى إعادة الاختبار والتركيز جيداً.';
     scoreMsg=`درجتك ${correct} — يقع خارج المدى المحدد، يجب إعادة الاختبار`;
     scoreInfoCls='dep-info';
-    activeBtn=[]; disableBtn=['btnA','btnB','btnC','btnD'];
 
   } else {
     /* ─── حالة حافة: 18 ─── */
@@ -1245,7 +1334,6 @@ function showResults(){
     det='درجتك تقع خارج المديين المحددين. يُرجى مراجعة المشرف لتحديد بيئة التعلم المناسبة لك.';
     scoreMsg=`درجتك ${correct} — يُرجى مراجعة المشرف`;
     scoreInfoCls='';
-    activeBtn=['btnA','btnB','btnC','btnD']; disableBtn=[];
   }
 
   /* ── تحديث واجهة النتيجة ── */
@@ -1258,60 +1346,45 @@ function showResults(){
   si.textContent  = scoreMsg;
   si.className    = 'score-info' + (scoreInfoCls ? ' '+scoreInfoCls : '');
 
-  /* ── إظهار/إخفاء زر الإعادة والأزرار ── */
-  const retryBox = document.getElementById('retryBox');
-  const resBtns  = document.getElementById('resBtns');
+  /* ── التوجيه التلقائي لبيئة واحدة، بنمط دعم متوازن العدد ── */
+  const retryBox      = document.getElementById('retryBox');
+  const resBtns        = document.getElementById('resBtns');
+  const autoRouteMsg  = document.getElementById('autoRouteMsg');
+  const goEnvBtn       = document.getElementById('goEnvBtn');
 
-  // إخفاء كل الأزرار أولاً
-  ['btnA','btnB','btnC','btnD'].forEach(id=>{
-    document.getElementById(id).style.display='none';
-  });
+  window._assignedBtn = null;
 
   if (correct === 0) {
     retryBox.style.display = 'block';
     resBtns.style.display  = 'none';
-  } else {
-    retryBox.style.display = 'none';
-    resBtns.style.display  = 'grid';
 
-    if (bcls === 'dep') {
-      // معتمد → ثابت-معتمد (btnA) + مرن-معتمد (btnC)
-      document.getElementById('btnA').style.display = 'flex';
-      document.getElementById('btnC').style.display = 'flex';
-    } else if (bcls === 'ind') {
-      // مستقل → ثابت-مستقل (btnB) + مرن-مستقل (btnD)
-      document.getElementById('btnB').style.display = 'flex';
-      document.getElementById('btnD').style.display = 'flex';
-    } else {
-      // حالة حافة: أظهر الكل
-      ['btnA','btnB','btnC','btnD'].forEach(id=>{
-        document.getElementById(id).style.display='flex';
-      });
-    }
+  } else if (needsRouting) {
+    retryBox.style.display = 'none';
+    resBtns.style.display  = 'block';
+    goEnvBtn.style.display = 'none';
+    autoRouteMsg.textContent = '⏳ جارِ تحديد بيئتك المناسبة...';
+
+    const supportType = await getBalancedSupportType(bcls);   // 'fixed' | 'flex'
+    const supportLabel = supportType === 'fixed' ? 'نمط الدعم الثابت' : 'نمط الدعم المرن';
+    const assignedBtn =
+      bcls === 'dep' ? (supportType === 'fixed' ? 'btnA' : 'btnC')
+                      : (supportType === 'fixed' ? 'btnB' : 'btnD');
+
+    window._assignedBtn = assignedBtn;
+    document.getElementById('rBdg').textContent = badge + ' — ' + supportLabel;
+    autoRouteMsg.textContent = `🎯 بيئتك المناسبة: ${supportLabel}. سيتم نقلك تلقائيًا خلال لحظات...`;
+    goEnvBtn.style.display = 'block';
+    setTimeout(goToAssignedEnv, 4000);
+
+  } else {
+    /* حالة الحافة (18): لا يوجد تصنيف مؤكد — مراجعة المشرف يدويًا */
+    retryBox.style.display = 'none';
+    resBtns.style.display  = 'block';
+    autoRouteMsg.textContent = '⭐ يُرجى مراجعة المشرف لتحديد البيئة المناسبة — لا يمكن التوجيه التلقائي في هذه الحالة.';
+    goEnvBtn.style.display = 'none';
   }
 
-  /* ── إظهار زر تسليم النتيجة عبر واتساب ── */
   window._lastResult = { correct, total, badge, bcls };
-  document.getElementById('waBox').style.display = 'block';
-}
-
-/* ================================================================
-   WHATSAPP RESULT SUBMISSION
-================================================================ */
-function sendResultWhatsApp(){
-  const r = window._lastResult || {};
-  const correct = r.correct !== undefined ? r.correct : '—';
-  const total   = r.total   !== undefined ? r.total   : '—';
-  const badge   = r.badge   || '—';
-  const msg = `📊 *نتيجة اختبار الأشكال المتضمنة*
-
-✏️ *الدرجة:* ${correct} من ${total}
-🏷️ *التصنيف:* ${badge}
-
-📅 ${new Date().toLocaleDateString('ar-EG')}`;
-  /* ← ضع رقم الواتساب هنا مع كود الدولة بدون + مثال: 201001234567 */
-  const phone = '201069127003';
-  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
 /* ================================================================
@@ -1327,8 +1400,7 @@ function restartTest(){
   /* إعادة واجهة النتيجة */
   document.getElementById('resEl').classList.remove('on');
   document.getElementById('retryBox').style.display = 'none';
-  document.getElementById('resBtns').style.display  = 'grid';
-  document.getElementById('waBox').style.display    = 'none';
+  document.getElementById('resBtns').style.display  = 'none';
 
   /* إظهار منطقة الاختبار مباشرةً */
   document.getElementById('waitEl').style.display = 'none';

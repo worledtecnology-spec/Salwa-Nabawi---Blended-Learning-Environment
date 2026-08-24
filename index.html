@@ -290,5 +290,36 @@ body {
   </div>
 </div>
 
+<script>
+(function(){
+  function showLockToast(){
+    var toast = document.getElementById('trianLockToast');
+    if(!toast){
+      toast = document.createElement('div');
+      toast.id = 'trianLockToast';
+      toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1b4a4a;color:#fff;padding:12px 28px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;box-shadow:0 8px 28px rgba(27,74,74,.4);border:2px solid #2dd4bf;font-family:Cairo,sans-serif;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = '🔒 أكمل الاختبار التحصيلي القبلي أولاً للوصول لاختبار أساليب التعلم';
+    toast.style.display = 'block';
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ toast.style.display='none'; }, 3500);
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    var style = document.createElement('style');
+    style.textContent = '.nav a.nav-locked{opacity:.45;cursor:not-allowed!important;pointer-events:auto!important;}.nav a.nav-locked:hover{background:transparent!important;transform:none!important;box-shadow:none!important;}.nav a.nav-locked::after{content:"🔒";font-size:10px;margin-right:4px;}';
+    document.head.appendChild(style);
+
+    var link = document.querySelector('.nav a[href="trian.html"]');
+    if(link && !localStorage.getItem('preTestCompleted')){
+      link.classList.add('nav-locked');
+      link.dataset.orig = link.getAttribute('href');
+      link.removeAttribute('href');
+      link.addEventListener('click', function(e){ e.preventDefault(); showLockToast(); });
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
