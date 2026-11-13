@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<script src="env.js" data-site="main"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل المتعلم</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="guide.css">
+<style>
+.part{font-size:12px;font-weight:800;color:#64748b;padding:10px 10px 2px;letter-spacing:.3px;}
+.shot{margin:10px 0 14px;text-align:center;}
+.shot img{width:100%;max-width:880px;border:1.5px solid #cbd5e1;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,.08);cursor:zoom-in;}
+.shot figcaption{font-size:12.5px;font-weight:700;color:#475569;margin-top:6px;}
+.lessons{columns:2;column-gap:18px;margin:6px 0 10px;padding:0 20px 0 0;}
+.lessons li{font-size:13.5px;line-height:1.9;break-inside:avoid;}
+.url{direction:ltr;display:inline-block;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;padding:2px 10px;font-family:monospace;font-size:13px;word-break:break-all;}
+#zoom{position:fixed;inset:0;background:rgba(15,23,42,.9);display:none;align-items:center;justify-content:center;z-index:9999;cursor:zoom-out;padding:18px;}
+#zoom img{max-width:96%;max-height:94%;border-radius:10px;}
+@media (max-width:900px){.lessons{columns:1;}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand-logos">
+    <img src="img/logo-zu.png" alt="شعار جامعة الزقازيق">
+    <img src="img/logo-col.jpeg" alt="شعار كلية التربية النوعية">
+  </div>
+  <div class="header-title">بيئة التعلم المدمج لتنمية مهارات إنتاج الدروس التفاعلية لدى طلاب كلية التربية النوعية</div>
+</div>
+<nav class="nav"></nav>
+
+<div class="g-wrap">
+  <aside class="g-side">
+    <div class="g-side-hdr">📘 دليل المتعلم<small>اضغط على أي رابط لعرض محتواه</small></div>
+    <div class="g-links" id="gLinks"></div>
+  </aside>
+
+  <main class="g-main" id="gMain">
+
+    <!-- ===================== مقدمة ===================== -->
+    <section class="g-sec" id="welcome" data-title="مرحبًا بك" data-ico="👋" data-part="مقدمة">
+      <p class="lead">أعزائي طلاب الفرقة الثالثة شعبة الحاسب الآلي، أهلًا ومرحبًا بكم في البيئة التعليمية لتنمية مهارات <b>إنتاج الدروس التفاعلية</b>. يرشدك هذا الدليل خطوة بخطوة: كيف تدخل إلى البيئة، ثم كيف تتعامل مع كل رابط فيها حتى تنهي دراستك، فاقرأه بعناية حتى تتقدم في دراستك دون أن تحتاج لسؤال أحد.</p>
+      <div class="cards2">
+        <div class="mini"><b>🏫 في البيئة الصفية (المحاضرات)</b>تدرس الموديول الأول (خلفية نظرية عن الدروس التفاعلية) والموديول الثاني (نموذج التصميم التعليمي لتصميم الدروس التفاعلية).</div>
+        <div class="mini"><b>💻 في البيئة الإلكترونية (هذه البيئة)</b>تدرس الجانب العملي: الموديول الثالث (مرحلة إنتاج الدروس التفاعلية باستخدام برنامج CourseLab) والموديول الرابع (مرحلة نشر وتطبيق وتقويم الدروس التفاعلية).</div>
+      </div>
+      <div class="tip">📌 الدليل متاح في كل وقت من رابط «📘 دليل المتعلم» أعلى الشاشة، ويمكنك فتحه حتى أثناء الاختبارات (يفتح في نافذة جديدة).</div>
+    </section>
+
+    <!-- ===================== أولاً: الدخول إلى البيئة ===================== -->
+    <section class="g-sec" id="before" data-title="قبل الدخول: ما تحتاجه" data-ico="🧰" data-part="أولاً: الدخول إلى البيئة">
+      <ol class="steps">
+        <li>جهاز كمبيوتر أو لابتوب (يُفضّل لتطبيق برنامج CourseLab عمليًا)، أو تابلت بشاشة لا تقل عن 10 بوصة.</li>
+        <li>دقة الشاشة <b>1366 × 768 بكسل كحد أدنى</b>، والموصى بها <b>1920 × 1080 بكسل</b>.</li>
+        <li>متصفح إنترنت بإصدار حديث: Google Chrome (موصى به) أو Microsoft Edge أو Firefox.</li>
+        <li>اتصال مستمر بالإنترنت لمشاهدة الفيديوهات وحفظ إجاباتك دون انقطاع.</li>
+        <li>سماعات لمتابعة شرح الفيديوهات، ودفتر لتدوين النقاط المهمة.</li>
+      </ol>
+      <div class="tip">🔍 إذا ظهر شريط تمرير أو جزء مقصوص من الصفحة: صغّر تكبير المتصفح بالضغط على <b>Ctrl و −</b> حتى تظهر الصفحة كاملة، وللرجوع للحجم الطبيعي <b>Ctrl و 0</b>.</div>
+    </section>
+
+    <section class="g-sec" id="login" data-title="تسجيل الدخول" data-ico="🔑" data-part="أولاً: الدخول إلى البيئة">
+      <ol class="steps">
+        <li>افتح متصفح الإنترنت (مثل Google Chrome).</li>
+        <li>اكتب أو الصق رابط البيئة في شريط العنوان: <span class="url" id="envUrl"></span> ثم اضغط <b>Enter</b>.</li>
+        <li>تظهر <b>شاشة تسجيل الدخول</b> للبيئة. تأكد أن الزر <b>«تسجيل دخول الطالب»</b> أعلى الشاشة هو المحدد.</li>
+        <li>اكتب <b>اسم المستخدم</b> و<b>كلمة المرور</b> اللذين أعطتهما لك الباحثة، ثم اضغط <b>«دخول»</b>.</li>
+      </ol>
+      <figure class="shot"><img src="img/guide/01_login.jpg" alt="شاشة تسجيل الدخول"><figcaption>شاشة تسجيل الدخول</figcaption></figure>
+      <p>بمجرد الدخول يظهر اسمك أعلى الشاشة: <b>«👋 أهلاً، اسمك»</b> وبجواره زر <b>«تسجيل خروج»</b>، وتظهر روابط البيئة كلها، وفي أول دخول تنقلك البيئة مباشرة إلى الاختبار التحصيلي القبلي.</p>
+      <figure class="shot"><img src="img/guide/02_home.jpg" alt="الشاشة الرئيسية بعد الدخول"><figcaption>الشاشة الرئيسية للبيئة بعد تسجيل الدخول</figcaption></figure>
+      <div class="tip">🔐 بياناتك شخصية؛ لا تشاركها مع أحد. كل دخول وكل خطوة تنجزها يُحفظ باسمك، وعند الدخول مرة أخرى (من أي جهاز) تكمل من حيث توقفت.</div>
+    </section>
+
+    <!-- ===================== ثانياً: التفاعل مع البيئة والروابط ===================== -->
+    <section class="g-sec" id="tabs" data-title="روابط البيئة أعلى الشاشة" data-ico="🧭" data-part="ثانياً: التفاعل مع البيئة والروابط">
+      <p>تتنقل داخل البيئة من خلال <b>الروابط</b> أعلى الشاشة، وهي ظاهرة لك من لحظة الدخول حتى الخروج. الرابط الذي بجواره 🔒 لم يحن دوره بعد؛ اضغط عليه لتعرف ما الخطوة المطلوبة قبله.</p>
+      <table class="tbl">
+        <tr><th>الرابط</th><th>ماذا يحدث عند الضغط عليه؟</th></tr>
+        <tr><td>🏠 الرئيسية</td><td>يعرض عنوان البحث وبيانات الباحثة والسادة المشرفين.</td></tr>
+        <tr><td>📘 دليل المتعلم</td><td>هذا الدليل.</td></tr>
+        <tr><td>📋 التعليمات</td><td>تعليمات مختصرة في ثلاثة روابط: الدخول — أثناء التعلم — الاختبارات والخروج.</td></tr>
+        <tr><td>🎯 أهداف البيئة</td><td>يعرض <b>الأهداف</b> التي ستكون قادرًا على تحقيقها بعد دراستك في البيئة.</td></tr>
+        <tr><td>📝 التقويم</td><td>منه تؤدي الاختبار التحصيلي القبلي واختبار أساليب التعلم، وفي نهاية التعلم الاختبار التحصيلي البعدي.</td></tr>
+        <tr><td>🧩 اختبار أساليب التعلم</td><td>رابط مباشر لاختبار أساليب التعلم (يُفتح بعد الاختبار القبلي).</td></tr>
+        <tr><td>📖 المحتوى التعليمي</td><td>الموديول الثالث والرابع؛ يُفتح بعد الاختبارين وتسجيل الدخول لبيئتك.</td></tr>
+        <tr><td>📢 لوحة الإعلانات</td><td>آخر الأخبار والتعليمات والمواعيد المهمة.</td></tr>
+        <tr><td>📞 اتصل بنا</td><td>التواصل مع الباحثة عبر واتساب أو البريد الإلكتروني.</td></tr>
+        <tr><td>🚪 تسجيل خروج</td><td>الخروج من البيئة مع حفظ تقدّمك.</td></tr>
+      </table>
+    </section>
+
+    <section class="g-sec" id="evaluation" data-title="التقويم: الاختبار القبلي ثم أساليب التعلم" data-ico="📝" data-part="ثانياً: التفاعل مع البيئة والروابط">
+      <p>قبل دراسة الموديول الثالث يجب أن تجيب عن اختبارين بالترتيب. للإجابة على التقويم <b>اضغط على رابط «📝 التقويم»</b> واختر منه:</p>
+      <figure class="shot"><img src="img/guide/03_evaluation.jpg" alt="صفحة التقويم"><figcaption>صفحة التقويم: الاختبار القبلي — اختبار أساليب التعلم — الاختبار البعدي</figcaption></figure>
+      <h4>١) الاختبار التحصيلي القبلي</h4>
+      <ol class="steps">
+        <li>اضغط على بطاقة <b>«الاختبار التحصيلي القبلي»</b> فتظهر تعليمات الاختبار (160 سؤالًا في 90 دقيقة، ويُؤدّى مرة واحدة فقط).</li>
+        <li>اقرأ التعليمات ثم اضغط <b>«قرأت التعليمات»</b>، وأجب عن الأسئلة، ثم اضغط <b>«إنهاء الاختبار»</b>.</li>
+      </ol>
+      <figure class="shot"><img src="img/guide/04_pretest_instructions.jpg" alt="تعليمات الاختبار القبلي"><figcaption>تعليمات الاختبار التحصيلي القبلي</figcaption></figure>
+      <figure class="shot"><img src="img/guide/05_pretest_questions.jpg" alt="أسئلة الاختبار القبلي"><figcaption>شاشة الأسئلة: الوقت المتبقي أعلى الشاشة، وخريطة الأسئلة للتنقل</figcaption></figure>
+      <p>تظهر نتيجتك، وتحتها رابط <b>«الخطوة التالية: اختبار أساليب التعلم»</b> — اضغط عليه.</p>
+      <figure class="shot"><img src="img/guide/06_pretest_result.jpg" alt="نتيجة الاختبار القبلي"><figcaption>نتيجة الاختبار القبلي ورابط الانتقال لاختبار أساليب التعلم</figcaption></figure>
+      <h4>٢) اختبار أساليب التعلم</h4>
+      <p>يُفتح من الرابط السابق، أو من بطاقة <b>«اختبار أساليب التعلم»</b> داخل «التقويم». تبحث فيه عن شكل بسيط مخفي داخل شكل معقد وترسم حدوده بالماوس: قسم تدريبي (7 أشكال في دقيقتين) ثم قسمان (9 أشكال في 5 دقائق لكل منهما).</p>
+      <figure class="shot"><img src="img/guide/08_styles_intro.jpg" alt="تعليمات اختبار أساليب التعلم"><figcaption>تعليمات اختبار أساليب التعلم</figcaption></figure>
+      <p>بناءً على درجتك في الاختبار <b>يتم توجيهك تلقائيًا للبيئة المناسبة لك</b> (نمط الدعم الثابت أو المرن).</p>
+      <figure class="shot"><img src="img/guide/09_styles_result.jpg" alt="نتيجة اختبار أساليب التعلم"><figcaption>نتيجة اختبار أساليب التعلم والتوجيه لنمط الدعم المناسب</figcaption></figure>
+      <h4>٣) تسجيل الدخول للبيئة المناسبة لك</h4>
+      <p>بعد التوجيه تظهر لك <b>شاشة تسجيل الدخول</b> الخاصة ببيئتك؛ اكتب <b>اسم المستخدم</b> و<b>كلمة المرور</b> (نفس بيانات دخولك للبيئة) ثم اضغط <b>«دخول»</b>، فيُفتح لك المحتوى التعليمي.</p>
+      <figure class="shot"><img src="img/guide/09b_pattern_login.jpg" alt="تسجيل الدخول للبيئة المناسبة"><figcaption>شاشة تسجيل الدخول للبيئة التي تم توجيهك إليها</figcaption></figure>
+    </section>
+
+    <section class="g-sec" id="support" data-title="نمط الدعم المناسب لك" data-ico="🤝" data-part="ثانياً: التفاعل مع البيئة والروابط">
+      <p>الدعم عبارة عن نصائح وتوجيهات تساعدك على حل النشاط التعليمي، ويظهر لك حسب البيئة التي تم توجيهك إليها:</p>
+      <div class="cards2">
+        <div class="mini" id="supFixed"><b>✨ نمط الدعم الثابت</b>يظهر الدعم في لوحة على يسار النشاط بشكل ثابت دون أن تفتحها، وتظهر النقاط تباعًا ولا تُحذف؛ مرّر لأعلى داخل اللوحة لمراجعة أي نقطة سابقة.</div>
+        <div class="mini" id="supFlex"><b>🔄 نمط الدعم المرن</b>يظهر الدعم في لوحة على يسار النشاط عند احتياجك له فقط: اضغط زر <b>«▶ ابدأ الدعم»</b> فتظهر النقاط تباعًا، واضغط <b>«✕ إغلاق»</b> لإخفائه.</div>
+      </div>
+      <div class="tip" id="mySupport" style="display:none;"></div>
+      <div class="tip">ℹ️ الدعم يظهر في <b>النشاط التعليمي</b> فقط؛ أما شاشة المحتوى فتقدّم الشرح كاملًا بالنص والفيديو.</div>
+    </section>
+
+    <section class="g-sec" id="content" data-title="المحتوى التعليمي" data-ico="📖" data-part="ثانياً: التفاعل مع البيئة والروابط">
+      <p>المحتوى التعليمي في هذه البيئة هو <b>الجانب العملي</b> من المقرر، وينقسم إلى موديولين:</p>
+      <table class="tbl">
+        <tr><th>الموديول</th><th>عنوانه</th><th>الدروس</th></tr>
+        <tr><td>الموديول الثالث</td><td>مرحلة إنتاج الدروس التفاعلية باستخدام برنامج CourseLab</td><td>7 دروس</td></tr>
+        <tr><td>الموديول الرابع</td><td>مرحلة نشر وتطبيق وتقويم الدروس التفاعلية</td><td>3 دروس</td></tr>
+      </table>
+      <p>لاستعراض الموديول الثالث اضغط على رابط <b>«📖 المحتوى التعليمي»</b> ثم على بطاقة <b>«الموديول الثالث»</b>:</p>
+      <figure class="shot"><img src="img/guide/10_modules.jpg" alt="صفحة الموديولات"><figcaption>صفحة الموديولات التعليمية</figcaption></figure>
+      <p>تظهر لك على يمين الشاشة روابط دروس الموديول الثالث:</p>
+      <ol class="lessons">
+        <li>خلفية نظرية عن برنامج CourseLab</li>
+        <li>تحميل وتثبيت برنامج CourseLab وإنشاء درس جديد</li>
+        <li>تحرير الدرس التفاعلي باستخدام CourseLab</li>
+        <li>التعامل مع الكائنات في برنامج CourseLab</li>
+        <li>التعامل مع الكائنات المركبة في CourseLab</li>
+        <li>ضبط خصائص الكائنات في برنامج CourseLab</li>
+        <li>إدراج الأسئلة والاختبارات في الدرس التفاعلي</li>
+      </ol>
+      <p>اضغط على الدرس فتظهر تحته ثلاثة روابط: <b>🎯 أهداف الدرس</b> — <b>📄 محتوى الدرس</b> — <b>🧩 النشاط التعليمي</b>.</p>
+      <figure class="shot"><img src="img/guide/11_lesson_objectives.jpg" alt="أهداف الدرس"><figcaption>«أهداف الدرس»: ما ستتمكن منه بعد دراسة الدرس</figcaption></figure>
+      <p>في <b>«محتوى الدرس»</b> تظهر <b>روابط المهارات</b> أعلى الشاشة؛ اضغط على رابط المهارة فيظهر <b>شرحها</b> وبجواره <b>الفيديو أو الصورة الخاصة بها</b>. تنقّل بين المهارات بالروابط، والمهارة التي شاهدتها يظهر بجوار رقمها ✓.</p>
+      <figure class="shot"><img src="img/guide/12_lesson_content_links.jpg" alt="محتوى الدرس وروابط المهارات"><figcaption>«محتوى الدرس»: روابط المهارات، وشرح المهارة المختارة مع الفيديو الخاص بها</figcaption></figure>
+      <p>بعد آخر درس في الموديول الثالث يظهر لك رابط الانتقال إلى الموديول الرابع، وبنفس الطريقة تستعرض دروسه الثلاثة: نشر الدرس التفاعلي في برنامج CourseLab — التغذية الراجعة لمرحلة الإنتاج ومرحلة التنفيذ — مرحلة التقويم Evaluation.</p>
+    </section>
+
+    <section class="g-sec" id="activity" data-title="النشاط التعليمي والدعم" data-ico="🧩" data-part="ثانياً: التفاعل مع البيئة والروابط">
+      <ol class="steps">
+        <li>بعد دراسة محتوى الدرس اضغط على <b>«🧩 النشاط التعليمي»</b> في قائمة الدرس على اليمين.</li>
+        <li>يظهر أمامك <b>وصف النشاط</b> و<b>المطلوب منك</b>؛ نفّذه على برنامج CourseLab.</li>
+        <li>أثناء تنفيذ النشاط، إذا احتجت إلى دعم ستجده في لوحة الدعم على اليسار: ظاهرًا أمامك مباشرة (الدعم الثابت)، أو تطلبه بالضغط على زر «ابدأ الدعم» (الدعم المرن).</li>
+        <li>اكتب إجابتك في المساحة المخصصة أسفل النشاط، ثم اضغط <b>«تسليم الإجابة»</b>. يمكنك تعديلها وإعادة تسليمها قبل الانتقال للدرس التالي.</li>
+      </ol>
+      <figure class="shot"><img src="img/guide/13_activity_fixed_support.jpg" alt="النشاط مع الدعم الثابت"><figcaption>النشاط التعليمي مع <b>الدعم الثابت</b> (يظهر على اليسار تلقائيًا)</figcaption></figure>
+      <figure class="shot"><img src="img/guide/14_activity_flex_button.jpg" alt="زر الدعم المرن"><figcaption>النشاط التعليمي مع <b>الدعم المرن</b>: زر «ابدأ الدعم» على اليسار</figcaption></figure>
+      <figure class="shot"><img src="img/guide/15_activity_flex_open.jpg" alt="الدعم المرن بعد فتحه"><figcaption>الدعم المرن بعد الضغط على «ابدأ الدعم»</figcaption></figure>
+    </section>
+
+    <section class="g-sec" id="poster" data-title="لوحة الإعلانات والتواصل مع الباحثة" data-ico="📢" data-part="ثانياً: التفاعل مع البيئة والروابط">
+      <p>اضغط على <b>«📢 لوحة الإعلانات»</b> لمتابعة آخر الأخبار والتعليمات المطلوبة والمواعيد المهمة.</p>
+      <figure class="shot"><img src="img/guide/16_poster.jpg" alt="لوحة الإعلانات"><figcaption>لوحة الإعلانات</figcaption></figure>
+      <p>للتواصل مع الباحثة اضغط على <b>«📞 اتصل بنا»</b>، واختر واتساب أو البريد الإلكتروني، واذكر اسمك واسم الدرس.</p>
+      <figure class="shot"><img src="img/guide/17_contact.jpg" alt="اتصل بنا"><figcaption>صفحة «اتصل بنا»</figcaption></figure>
+    </section>
+
+    <section class="g-sec" id="posttest" data-title="الاختبار البعدي وآخر شاشة" data-ico="🏁" data-part="ثانياً: التفاعل مع البيئة والروابط">
+      <p>في نهاية دراستك لجميع الموديولات يظهر لك في نشاط آخر درس <b>شريط (بانر)</b> يوجّهك لأداء الاختبار البعدي، أو اضغط على نفس رابط <b>«📝 التقويم»</b> فيظهر لك <b>الاختبار التحصيلي البعدي</b>.</p>
+      <figure class="shot"><img src="img/guide/18_posttest_banner.jpg" alt="بانر الاختبار البعدي"><figcaption>الشريط الذي يوجّهك للاختبار البعدي بعد آخر درس</figcaption></figure>
+      <p>اكتب <b>كلمة مرور الاختبار البعدي</b> التي تعلنها الباحثة في موعد الاختبار (اسمك يظهر تلقائيًا)، ثم اضغط «دخول». الاختبار بنفس مواصفات القبلي: 160 سؤالًا في 90 دقيقة.</p>
+      <figure class="shot"><img src="img/guide/19_posttest_password.jpg" alt="كلمة مرور الاختبار البعدي"><figcaption>الدخول للاختبار البعدي</figcaption></figure>
+      <table class="tbl">
+        <tr><th>نتيجتك في الاختبار البعدي</th><th>ماذا تفعل؟</th></tr>
+        <tr><td>50% فأكثر</td><td>تكون قد اجتزت المحتوى المقدم بنجاح، وهذه هي <b>الشاشة الأخيرة</b> في البيئة؛ اقرأ نتيجتك ثم اضغط «إنهاء وتسجيل الخروج من البيئة».</td></tr>
+        <tr><td>أقل من 50%</td><td>تضغط «العودة لدراسة المحتوى التعليمي»، وتدرس محتوى الموديولات مرة أخرى، ثم تعيد الاختبار البعدي من رابط «التقويم».</td></tr>
+      </table>
+      <figure class="shot"><img src="img/guide/20_final_screen.jpg" alt="نتيجة الاختبار البعدي"><figcaption>الشاشة الأخيرة: نتيجة الاختبار التحصيلي البعدي</figcaption></figure>
+    </section>
+
+    <section class="g-sec" id="exit" data-title="الخروج من البيئة ونصائح عامة" data-ico="🚪" data-part="ثانياً: التفاعل مع البيئة والروابط">
+      <ul class="steps">
+        <li>للخروج في أي وقت اضغط زر <b>«🚪 تسجيل خروج»</b> أعلى الشاشة بجوار اسمك؛ يُحفظ تقدّمك وتكمل من نفس النقطة في الدخول التالي.</li>
+        <li>لا تغلق نافذة الاختبار أثناء أدائه؛ وعند انتهاء الوقت يُسلَّم تلقائيًا.</li>
+        <li>ادرس الدروس بالترتيب، ونفّذ نشاط كل درس قبل الانتقال للدرس التالي.</li>
+        <li>إذا واجهتك مشكلة تقنية: حدّث الصفحة (F5)، وتأكد من الإنترنت، ثم تواصل مع الباحثة من «اتصل بنا».</li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+<div id="zoom" onclick="this.style.display='none'"><img alt=""></div>
+
+<script src="guide.js"></script>
+<script>
+(function(){
+  /* رابط البيئة الفعلي */
+  try {
+    var u = new URL(ENV.url('main', 'index.html'), location.href).href;
+    document.getElementById('envUrl').textContent = u.replace(/index\.html$/, '');
+  } catch(e) {}
+  /* تكبير الصور */
+  document.querySelectorAll('.shot img').forEach(function(im){
+    im.addEventListener('click', function(){ var z = document.getElementById('zoom'); z.querySelector('img').src = im.src; z.style.display = 'flex'; });
+  });
+  /* إبراز نمط الدعم الخاص بالطالب */
+  try {
+    var a = localStorage.getItem('assignedEnv');
+    if (!a || !ENV.CONFIG.SITES[a]) return;
+    var S = ENV.CONFIG.SITES[a];
+    var el = document.getElementById(S.support === 'fixed' ? 'supFixed' : 'supFlex'); if (el) el.classList.add('mine');
+    var t = document.getElementById('mySupport'); t.style.display = 'block';
+    t.innerHTML = '⭐ نمط الدعم المحدد لك: <b>' + S.label + '</b>.';
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>
